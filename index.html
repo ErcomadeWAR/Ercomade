@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ERCOMODE AIRO WAR — Тактическая 2D-стратегия</title>
-<meta name="description" content="Ercomode Airo War — 2D-стратегия про воздушную войну на карте. Песочница, режим против ИИ, Украинский режим.">
+<title>ERCOMODE AIRO WAR</title>
+<meta name="description" content="Ercomode Airo War — 2D-стратегия о воздушной войне на карте.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#06080b;
-  --panel:#0d1218;
-  --panel2:#121a23;
-  --line:#1f2c3a;
+  --bg:#05070a;
+  --panel:#0b1118;
+  --panel2:#101923;
+  --line:#1c2a39;
   --text:#d7e0ea;
   --muted:#7d8c9c;
   --blue:#2f8cff;
@@ -24,265 +24,263 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Inter',system-ui,sans-serif;
-  line-height:1.6;
-  overflow-x:hidden;
-}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;line-height:1.6;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+main,header,footer,.ticker{position:relative;z-index:2}
 
-/* ---------- фон-радар ---------- */
+/* ---------- фон ---------- */
 #fx{position:fixed;inset:0;z-index:0;pointer-events:none}
-.grid-bg{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(47,140,255,.05) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(47,140,255,.05) 1px,transparent 1px);
-  background-size:48px 48px;
-  mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 80%);
-}
-main,header,footer{position:relative;z-index:1}
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(47,140,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(47,140,255,.05) 1px,transparent 1px);
+  background-size:48px 48px;mask-image:radial-gradient(ellipse at 50% 25%,#000 25%,transparent 80%)}
+.scan{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.5;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
+.glow{position:fixed;z-index:0;pointer-events:none;width:620px;height:620px;border-radius:50%;filter:blur(120px);opacity:.22}
+.glow.a{background:var(--blue);left:-200px;top:-100px}
+.glow.b{background:var(--yellow);right:-220px;top:40%}
+
+/* ---------- прогресс-линия ---------- */
+#bar{position:fixed;top:0;left:0;height:3px;width:0;z-index:100;background:linear-gradient(90deg,var(--blue),var(--yellow));box-shadow:0 0 12px var(--yellow)}
 
 /* ---------- шапка ---------- */
-header.top{
-  position:sticky;top:0;z-index:50;
-  backdrop-filter:blur(12px);
-  background:rgba(6,8,11,.72);
-  border-bottom:1px solid var(--line);
-}
-.nav{display:flex;align-items:center;justify-content:space-between;height:64px}
-.logo{
-  font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:.14em;
-  font-size:18px;display:flex;align-items:center;gap:10px;
-}
-.logo i{
-  width:12px;height:12px;border-radius:50%;
-  background:var(--yellow);box-shadow:0 0 14px var(--yellow);
-  animation:pulse 1.8s infinite;
-}
-@keyframes pulse{50%{opacity:.35}}
-.nav ul{display:flex;gap:28px;list-style:none;font-size:14px;color:var(--muted)}
+header.top{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);background:rgba(5,7,10,.75);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:66px;gap:16px}
+.logo{font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:.14em;font-size:18px;display:flex;align-items:center;gap:10px;white-space:nowrap}
+.logo i{width:12px;height:12px;border-radius:50%;background:var(--yellow);box-shadow:0 0 14px var(--yellow);animation:pulse 1.8s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.nav ul{display:flex;gap:26px;list-style:none;font-size:14px;color:var(--muted)}
+.nav ul a{transition:.2s}
 .nav ul a:hover{color:#fff}
-.btn{
-  display:inline-flex;align-items:center;gap:10px;
-  font-family:'Oswald',sans-serif;letter-spacing:.12em;text-transform:uppercase;
-  padding:13px 26px;border-radius:10px;font-weight:600;font-size:15px;
-  border:1px solid transparent;cursor:pointer;transition:.25s;
-}
-.btn-main{
-  background:linear-gradient(135deg,var(--yellow),#ff9d1c);color:#111;
-  box-shadow:0 8px 30px rgba(255,170,30,.28);
-}
-.btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 38px rgba(255,170,30,.45)}
+.right{display:flex;align-items:center;gap:12px}
+.lang{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-family:'Roboto Mono',monospace;font-size:13px}
+.lang button{background:transparent;border:0;color:var(--muted);padding:9px 13px;cursor:pointer;letter-spacing:.1em;transition:.2s}
+.lang button.on{background:var(--yellow);color:#111;font-weight:700}
+.lang button:not(.on):hover{color:#fff}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:'Oswald',sans-serif;letter-spacing:.12em;text-transform:uppercase;
+  padding:13px 26px;border-radius:10px;font-weight:600;font-size:15px;border:1px solid transparent;cursor:pointer;transition:.25s}
+.btn-main{background:linear-gradient(135deg,var(--yellow),#ff9d1c);color:#111;box-shadow:0 8px 30px rgba(255,170,30,.28)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,170,30,.5)}
 .btn-ghost{border-color:var(--line);color:var(--text);background:rgba(255,255,255,.02)}
 .btn-ghost:hover{border-color:var(--blue);color:#fff}
+.btn-sm{padding:10px 20px;font-size:13px}
+
+/* ---------- бегущая строка ---------- */
+.ticker{border-bottom:1px solid var(--line);background:rgba(255,198,46,.06);overflow:hidden;white-space:nowrap}
+.ticker div{display:inline-block;padding:9px 0;font-family:'Roboto Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--yellow);animation:mq 38s linear infinite}
+.ticker span{margin:0 30px}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ---------- hero ---------- */
-.hero{padding:96px 0 70px;text-align:center}
-.tag{
-  display:inline-block;font-family:'Roboto Mono',monospace;font-size:12px;
-  letter-spacing:.2em;color:var(--yellow);
-  border:1px solid rgba(255,198,46,.35);padding:7px 16px;border-radius:99px;
-  background:rgba(255,198,46,.06);margin-bottom:28px;
-}
-.hero h1{
-  font-family:'Oswald',sans-serif;font-weight:700;
-  font-size:clamp(44px,9vw,118px);line-height:.95;letter-spacing:.04em;
-  text-transform:uppercase;
-}
-.hero h1 span{
-  display:block;
-  background:linear-gradient(90deg,var(--blue) 0 50%,var(--yellow) 50% 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.hero p.lead{
-  max-width:680px;margin:28px auto 38px;color:var(--muted);font-size:18px;
-}
+.hero{padding:90px 0 70px;text-align:center}
+.tag{display:inline-flex;align-items:center;gap:10px;font-family:'Roboto Mono',monospace;font-size:12px;letter-spacing:.18em;color:var(--yellow);
+  border:1px solid rgba(255,198,46,.35);padding:8px 18px;border-radius:99px;background:rgba(255,198,46,.06);margin-bottom:30px}
+.tag i{width:8px;height:8px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:pulse 1.2s infinite}
+.hero h1{font-family:'Oswald',sans-serif;font-weight:700;font-size:clamp(46px,10vw,132px);line-height:.92;letter-spacing:.04em;text-transform:uppercase;position:relative}
+.hero h1 .l2{display:block;background:linear-gradient(90deg,var(--blue) 0 50%,var(--yellow) 50% 100%);-webkit-background-clip:text;background-clip:text;color:transparent;position:relative}
+.glitch{position:relative}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;right:0;top:0;overflow:hidden;opacity:.7}
+.glitch::before{color:var(--red);-webkit-text-fill-color:var(--red);transform:translateX(-3px);clip-path:inset(0 0 60% 0);animation:gl1 4s infinite steps(1)}
+.glitch::after{color:var(--blue);-webkit-text-fill-color:var(--blue);transform:translateX(3px);clip-path:inset(60% 0 0 0);animation:gl2 4s infinite steps(1)}
+@keyframes gl1{0%,92%,100%{opacity:0}93%{opacity:.8;clip-path:inset(10% 0 55% 0)}96%{opacity:.8;clip-path:inset(40% 0 30% 0)}}
+@keyframes gl2{0%,90%,100%{opacity:0}91%{opacity:.8;clip-path:inset(60% 0 10% 0)}95%{opacity:.8;clip-path:inset(30% 0 40% 0)}}
+.hero .lead{max-width:700px;margin:30px auto 38px;color:var(--muted);font-size:18px}
 .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.stats{
-  margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
-}
-.stat{background:var(--panel);padding:26px 14px}
-.stat b{
-  display:block;font-family:'Oswald',sans-serif;font-size:36px;color:#fff;letter-spacing:.04em;
-}
+
+.last{margin:46px auto 0;max-width:520px;border:1px solid rgba(255,198,46,.4);border-radius:var(--radius);padding:18px 22px;
+  background:linear-gradient(180deg,rgba(255,198,46,.08),rgba(255,198,46,.02));font-family:'Roboto Mono',monospace;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.last small{color:var(--muted);letter-spacing:.14em;font-size:11px;text-transform:uppercase;display:block}
+.last b{font-size:22px;color:#fff;letter-spacing:.06em}
+.last em{font-style:normal;color:var(--yellow);font-weight:700}
+
+.stats{margin-top:56px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.stat{background:var(--panel);padding:26px 14px;transition:.3s}
+.stat:hover{background:var(--panel2)}
+.stat b{display:block;font-family:'Oswald',sans-serif;font-size:38px;color:#fff;letter-spacing:.04em}
 .stat small{font-family:'Roboto Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
 
 /* ---------- секции ---------- */
-section{padding:84px 0}
-.sec-head{margin-bottom:44px}
-.sec-head small{
-  font-family:'Roboto Mono',monospace;color:var(--yellow);letter-spacing:.2em;font-size:12px;text-transform:uppercase;
-}
-.sec-head h2{
-  font-family:'Oswald',sans-serif;font-size:clamp(30px,5vw,48px);
-  text-transform:uppercase;letter-spacing:.05em;margin-top:6px;
-}
-.sec-head p{color:var(--muted);max-width:620px;margin-top:10px}
+section{padding:88px 0}
+.sec-head{margin-bottom:46px}
+.sec-head small{font-family:'Roboto Mono',monospace;color:var(--yellow);letter-spacing:.2em;font-size:12px;text-transform:uppercase}
+.sec-head h2{font-family:'Oswald',sans-serif;font-size:clamp(30px,5vw,50px);text-transform:uppercase;letter-spacing:.05em;margin-top:6px}
+.sec-head p{color:var(--muted);max-width:640px;margin-top:10px}
+
+/* HUD-рамка */
+.hud{position:relative}
+.hud::before,.hud::after{content:"";position:absolute;width:18px;height:18px;border:2px solid var(--yellow);opacity:.0;transition:.35s}
+.hud::before{left:-1px;top:-1px;border-right:0;border-bottom:0}
+.hud::after{right:-1px;bottom:-1px;border-left:0;border-top:0}
+.hud:hover::before,.hud:hover::after{opacity:1}
 
 /* ---------- карточки ---------- */
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
-.card{
-  background:linear-gradient(180deg,var(--panel2),var(--panel));
-  border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;
-  position:relative;overflow:hidden;transition:.3s;
-}
-.card::before{
-  content:"";position:absolute;left:0;top:0;height:3px;width:100%;
-  background:linear-gradient(90deg,var(--blue),var(--yellow));
-  transform:scaleX(0);transform-origin:left;transition:.4s;
-}
-.card:hover{transform:translateY(-5px);border-color:#2a3d52}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;position:relative;overflow:hidden;transition:.3s}
+.card::before{content:"";position:absolute;left:0;top:0;height:3px;width:100%;background:linear-gradient(90deg,var(--blue),var(--yellow));transform:scaleX(0);transform-origin:left;transition:.45s}
+.card:hover{transform:translateY(-6px);border-color:#2b4058}
 .card:hover::before{transform:scaleX(1)}
-.card .ico{
-  width:46px;height:46px;border-radius:12px;display:grid;place-items:center;
-  background:rgba(47,140,255,.1);border:1px solid rgba(47,140,255,.3);
-  font-size:22px;margin-bottom:18px;
-}
+.ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:rgba(47,140,255,.1);border:1px solid rgba(47,140,255,.3);font-size:22px;margin-bottom:18px}
 .card h3{font-family:'Oswald',sans-serif;font-size:22px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
 .card p{color:var(--muted);font-size:15px}
-.card .pill{
-  display:inline-block;margin-top:16px;font-family:'Roboto Mono',monospace;
-  font-size:11px;letter-spacing:.12em;padding:4px 10px;border-radius:6px;
-  background:rgba(255,198,46,.1);color:var(--yellow);
-}
+.pill{display:inline-block;margin-top:16px;font-family:'Roboto Mono',monospace;font-size:11px;letter-spacing:.12em;padding:4px 10px;border-radius:6px;background:rgba(255,198,46,.1);color:var(--yellow)}
+.pill.red{background:rgba(255,74,61,.12);color:var(--red)}
 
-/* ---------- режимы ---------- */
-.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.mode{
-  border:1px solid var(--line);border-radius:var(--radius);padding:34px;
-  background:
-    radial-gradient(circle at 100% 0,rgba(47,140,255,.14),transparent 55%),
-    var(--panel);
-}
-.mode.ua{background:radial-gradient(circle at 100% 0,rgba(255,198,46,.16),transparent 55%),var(--panel)}
-.mode h3{font-family:'Oswald',sans-serif;font-size:26px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
-.mode ul{list-style:none;margin-top:14px}
-.mode li{padding:7px 0 7px 24px;position:relative;color:var(--muted);font-size:15px}
-.mode li::before{content:"▸";position:absolute;left:0;color:var(--yellow)}
+/* ---------- арсенал ---------- */
+.arsenal{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.unit{border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px;background:var(--panel);position:relative;overflow:hidden;transition:.3s}
+.unit:hover{transform:translateY(-5px);border-color:#34506d}
+.unit .code{font-family:'Oswald',sans-serif;font-size:clamp(34px,5vw,48px);font-weight:700;letter-spacing:.05em;line-height:1;margin:16px 0 14px;
+  background:linear-gradient(90deg,#fff,var(--muted));-webkit-background-clip:text;background-clip:text;color:transparent}
+.unit p{color:var(--muted);font-size:15px}
+.unit .bgnum{position:absolute;right:-10px;bottom:-30px;font-family:'Oswald',sans-serif;font-size:170px;font-weight:700;color:rgba(255,255,255,.025);line-height:1;pointer-events:none}
+.unit.hot{border-color:rgba(255,198,46,.45);box-shadow:0 0 60px rgba(255,198,46,.07)}
+.unit.hot2{border-color:rgba(255,74,61,.45);box-shadow:0 0 60px rgba(255,74,61,.07)}
+.unit svg{width:100%;height:56px;margin-top:20px;opacity:.9}
 
-/* ---------- обновления ---------- */
-.log{display:flex;flex-direction:column;gap:22px}
-.entry{
-  display:grid;grid-template-columns:170px 1fr;gap:26px;
-  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:30px;
-}
-.entry.new{border-color:rgba(255,198,46,.5);box-shadow:0 0 50px rgba(255,198,46,.07)}
-.date{font-family:'Roboto Mono',monospace}
-.date b{display:block;font-size:22px;color:#fff}
-.date span{
-  display:inline-block;margin-top:8px;font-size:11px;letter-spacing:.14em;
-  padding:4px 10px;border-radius:6px;background:var(--yellow);color:#111;font-weight:700;
-}
-.entry h3{font-family:'Oswald',sans-serif;font-size:26px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}
-.entry ul{list-style:none}
-.entry li{
-  padding:10px 0 10px 28px;position:relative;border-bottom:1px dashed var(--line);color:var(--text);
-}
-.entry li:last-child{border-bottom:0}
-.entry li::before{content:"✦";position:absolute;left:0;color:var(--yellow)}
-.entry li.warn{
-  margin-top:10px;padding:16px 18px 16px 46px;border:1px solid rgba(255,74,61,.4);
-  border-radius:10px;background:rgba(255,74,61,.07);
-}
-.entry li.warn::before{content:"📡";left:14px;color:var(--red)}
-.entry li b{color:#fff}
+/* ---------- режимы (вкладки) ---------- */
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+.tabs button{font-family:'Oswald',sans-serif;letter-spacing:.1em;text-transform:uppercase;font-size:15px;padding:12px 24px;border-radius:10px;
+  border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer;transition:.25s}
+.tabs button:hover{color:#fff;border-color:#34506d}
+.tabs button.on{background:linear-gradient(135deg,var(--yellow),#ff9d1c);color:#111;border-color:transparent}
+.panel{display:none;grid-template-columns:1.1fr .9fr;gap:30px;border:1px solid var(--line);border-radius:var(--radius);padding:38px;background:
+  radial-gradient(circle at 100% 0,rgba(47,140,255,.14),transparent 55%),var(--panel);animation:fade .5s}
+.panel.on{display:grid}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.panel h3{font-family:'Oswald',sans-serif;font-size:30px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.panel p{color:var(--muted)}
+.panel ul{list-style:none}
+.panel li{padding:11px 0 11px 28px;position:relative;border-bottom:1px dashed var(--line)}
+.panel li:last-child{border-bottom:0}
+.panel li::before{content:"▸";position:absolute;left:0;color:var(--yellow)}
 
-/* ---------- радар-блок ---------- */
-.radar-box{
-  display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
-  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:44px;
-}
-.radar{
-  width:100%;max-width:340px;aspect-ratio:1;margin:0 auto;border-radius:50%;position:relative;
-  background:
-    radial-gradient(circle,transparent 24%,rgba(61,220,132,.18) 25%,transparent 26%),
-    radial-gradient(circle,transparent 49%,rgba(61,220,132,.18) 50%,transparent 51%),
-    radial-gradient(circle,transparent 74%,rgba(61,220,132,.18) 75%,transparent 76%),
-    radial-gradient(circle,#0a1a12,#050b08);
-  border:2px solid rgba(61,220,132,.5);
-  box-shadow:0 0 60px rgba(61,220,132,.15) inset;
-  overflow:hidden;
-}
-.radar::before{
-  content:"";position:absolute;inset:0;
-  background:conic-gradient(from 0deg,rgba(61,220,132,.55),transparent 28%);
-  animation:spin 3.6s linear infinite;
-}
-.radar::after{
-  content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(61,220,132,.2);
-  box-shadow:0 0 0 0 transparent;
-}
+/* ---------- радар ---------- */
+.radar-box{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:44px}
+.radar{width:100%;max-width:360px;aspect-ratio:1;margin:0 auto;border-radius:50%;position:relative;
+  background:radial-gradient(circle,transparent 24%,rgba(61,220,132,.2) 25%,transparent 26%),radial-gradient(circle,transparent 49%,rgba(61,220,132,.2) 50%,transparent 51%),radial-gradient(circle,transparent 74%,rgba(61,220,132,.2) 75%,transparent 76%),radial-gradient(circle,#0a1a12,#050b08);
+  border:2px solid rgba(61,220,132,.5);box-shadow:0 0 70px rgba(61,220,132,.15) inset;overflow:hidden}
+.radar::before{content:"";position:absolute;inset:0;background:conic-gradient(from 0deg,rgba(61,220,132,.55),transparent 28%);animation:spin 3.6s linear infinite}
+.radar.off::before{opacity:0;animation:none}
 @keyframes spin{to{transform:rotate(360deg)}}
-.blip{
-  position:absolute;width:9px;height:9px;border-radius:50%;background:var(--green);
-  box-shadow:0 0 12px var(--green);animation:blip 3.6s infinite;
-}
+.blip{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green);opacity:0;transition:.3s}
+.radar:not(.off) .blip{animation:blip 3.6s infinite}
 @keyframes blip{0%,100%{opacity:0}8%{opacity:1}60%{opacity:0}}
-.radar-box h3{font-family:'Oswald',sans-serif;font-size:30px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.radar-state{font-family:'Roboto Mono',monospace;font-size:12px;letter-spacing:.14em;margin:18px 0 22px;display:inline-block;padding:6px 12px;border-radius:6px}
+.radar-state.on{background:rgba(61,220,132,.12);color:var(--green)}
+.radar-state.off{background:rgba(255,74,61,.12);color:var(--red)}
+.radar-box h3{font-family:'Oswald',sans-serif;font-size:32px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
 .radar-box p{color:var(--muted);margin-bottom:12px}
 
-/* ---------- футер ---------- */
+/* ---------- обновления ---------- */
+.log{display:flex;flex-direction:column;gap:22px;position:relative}
+.entry{display:grid;grid-template-columns:190px 1fr;gap:28px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:32px}
+.entry.new{border-color:rgba(255,198,46,.55);box-shadow:0 0 60px rgba(255,198,46,.08)}
+.date{font-family:'Roboto Mono',monospace}
+.date b{display:block;font-size:22px;color:#fff}
+.date .time{display:block;color:var(--yellow);font-size:15px;margin-top:2px;letter-spacing:.1em}
+.date span.badge{display:inline-block;margin-top:10px;font-size:11px;letter-spacing:.14em;padding:4px 10px;border-radius:6px;background:var(--yellow);color:#111;font-weight:700}
+.date span.badge.old{background:#243344;color:var(--text)}
+.entry h3{font-family:'Oswald',sans-serif;font-size:26px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}
+.entry ul{list-style:none}
+.entry li{padding:10px 0 10px 28px;position:relative;border-bottom:1px dashed var(--line)}
+.entry li:last-child{border-bottom:0}
+.entry li::before{content:"✦";position:absolute;left:0;color:var(--yellow)}
+.entry li b{color:#fff}
+.entry li.warn{margin-top:10px;padding:16px 18px 16px 48px;border:1px solid rgba(255,74,61,.4);border-radius:10px;background:rgba(255,74,61,.07)}
+.entry li.warn::before{content:"📡";left:14px}
+
+/* ---------- финал ---------- */
 .final{text-align:center}
-.final h2{font-family:'Oswald',sans-serif;font-size:clamp(32px,6vw,60px);text-transform:uppercase;letter-spacing:.05em}
+.final h2{font-family:'Oswald',sans-serif;font-size:clamp(34px,6vw,64px);text-transform:uppercase;letter-spacing:.05em}
 .final p{color:var(--muted);margin:14px 0 30px}
-footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:13px;text-align:center;font-family:'Roboto Mono',monospace}
+
+/* ---------- футер ---------- */
+footer{border-top:1px solid var(--line);padding:44px 0 30px;text-align:center;background:linear-gradient(180deg,transparent,rgba(47,140,255,.04))}
+.tt{display:inline-flex;align-items:center;gap:16px;padding:16px 28px;border-radius:14px;border:1px solid var(--line);background:var(--panel);transition:.3s;margin-bottom:26px}
+.tt:hover{border-color:var(--yellow);transform:translateY(-3px);box-shadow:0 10px 40px rgba(255,198,46,.15)}
+.tt svg{width:30px;height:30px;flex:none}
+.tt small{display:block;font-family:'Roboto Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;text-align:left}
+.tt b{font-family:'Oswald',sans-serif;font-size:22px;letter-spacing:.06em;color:#fff;font-weight:600}
+.copy{color:var(--muted);font-size:13px;font-family:'Roboto Mono',monospace}
 
 /* ---------- появление ---------- */
-.rv{opacity:0;transform:translateY(26px);transition:.8s}
+.rv{opacity:0;transform:translateY(28px);transition:.85s cubic-bezier(.2,.7,.2,1)}
 .rv.on{opacity:1;transform:none}
 
-@media(max-width:860px){
+@media(max-width:900px){
   .nav ul{display:none}
   .stats{grid-template-columns:repeat(2,1fr)}
-  .entry{grid-template-columns:1fr}
-  .radar-box{grid-template-columns:1fr;padding:28px}
+  .entry,.radar-box,.panel.on{grid-template-columns:1fr}
+  .radar-box{padding:28px}
+  .panel{padding:26px}
+}
+@media(max-width:520px){
+  .right .btn{display:none}
 }
 </style>
 </head>
 <body>
 
+<div id="bar"></div>
 <canvas id="fx"></canvas>
 <div class="grid-bg"></div>
+<div class="scan"></div>
+<div class="glow a"></div>
+<div class="glow b"></div>
 
 <header class="top">
   <div class="wrap nav">
     <a href="#top" class="logo"><i></i>ERCOMODE AIRO WAR</a>
     <ul>
-      <li><a href="#about">Об игре</a></li>
-      <li><a href="#modes">Режимы</a></li>
-      <li><a href="#updates">Обновления</a></li>
+      <li><a href="#about" data-i18n="nav_about"></a></li>
+      <li><a href="#arsenal" data-i18n="nav_arsenal"></a></li>
+      <li><a href="#modes" data-i18n="nav_modes"></a></li>
+      <li><a href="#updates" data-i18n="nav_updates"></a></li>
     </ul>
-    <a href="#play" class="btn btn-main">Играть</a>
+    <div class="right">
+      <div class="lang">
+        <button data-lang="ru" class="on">RU</button>
+        <button data-lang="ua">UA</button>
+      </div>
+      <a href="#play" class="btn btn-main btn-sm" data-i18n="btn_play"></a>
+    </div>
   </div>
 </header>
+
+<div class="ticker">
+  <div id="tk"></div>
+</div>
 
 <main id="top">
 
   <!-- HERO -->
   <div class="hero">
     <div class="wrap">
-      <div class="tag">● ВЕРСИЯ ОТ 21.10.2026 · ОБНОВЛЕНИЕ «FP-5 FLAMINGO»</div>
-      <h1>Ercomode<span>Airo War</span></h1>
-      <p class="lead">
-        Тактическая 2D-стратегия о воздушной войне. Запускайте дроны и ракеты,
-        стройте ПВО, заводы и пусковые площадки на огромной карте — и решайте
-        исход противостояния в небе.
-      </p>
+      <div class="tag"><i></i><span data-i18n="tag"></span></div>
+      <h1>
+        <span class="glitch" data-text="Ercomode">Ercomode</span>
+        <span class="l2 glitch" data-text="Airo War">Airo War</span>
+      </h1>
+      <p class="lead" data-i18n="lead"></p>
       <div class="cta">
-        <a href="#play" class="btn btn-main">▶ Играть</a>
-        <a href="#updates" class="btn btn-ghost">Список обновлений</a>
+        <a href="#play" class="btn btn-main" data-i18n="btn_start"></a>
+        <a href="#updates" class="btn btn-ghost" data-i18n="btn_updates"></a>
+      </div>
+
+      <div class="last">
+        <div>
+          <small data-i18n="last_label"></small>
+          <b>22.10.2026 · <em>00:00</em></b>
+        </div>
+        <span class="pill" style="margin:0">+ МиГ-31К</span>
       </div>
 
       <div class="stats">
-        <div class="stat"><b>2D</b><small>Карта</small></div>
-        <div class="stat"><b>3</b><small>Режима игры</small></div>
-        <div class="stat"><b>FP-5</b><small>Новая ракета</small></div>
-        <div class="stat"><b>RU</b><small>Полный русский язык</small></div>
+        <div class="stat"><b>2D</b><small data-i18n="st1"></small></div>
+        <div class="stat"><b>3</b><small data-i18n="st2"></small></div>
+        <div class="stat"><b>2</b><small data-i18n="st3"></small></div>
+        <div class="stat"><b>RU · UA</b><small data-i18n="st4"></small></div>
       </div>
     </div>
   </div>
@@ -291,33 +289,75 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-s
   <section id="about">
     <div class="wrap">
       <div class="sec-head rv">
-        <small>// Об игре</small>
-        <h2>Небо решает всё</h2>
-        <p>Вы управляете техникой, строите экономику и обороняете территорию. Каждый запуск — это решение, каждый перехват — шанс на победу.</p>
+        <small data-i18n="a_small"></small>
+        <h2 data-i18n="a_h"></h2>
+        <p data-i18n="a_p"></p>
       </div>
-
       <div class="cards">
-        <div class="card rv">
+        <div class="card hud rv">
           <div class="ico">🚀</div>
-          <h3>Дроны и ракеты</h3>
-          <p>Реактивные дроны, баллистические и крылатые ракеты. У каждой цели своя скорость, высота и поведение в полёте.</p>
-          <span class="pill">Новое: FP-5 Flamingo</span>
+          <h3 data-i18n="c1_h"></h3>
+          <p data-i18n="c1_p"></p>
+          <span class="pill">FP-5 Flamingo</span>
         </div>
-        <div class="card rv">
+        <div class="card hud rv">
           <div class="ico">📡</div>
-          <h3>ПВО и радары</h3>
-          <p>Покупайте системы ПВО и расставляйте их где угодно. Перехват зависит от дальности, скорости и точности.</p>
+          <h3 data-i18n="c2_h"></h3>
+          <p data-i18n="c2_p"></p>
         </div>
-        <div class="card rv">
+        <div class="card hud rv">
           <div class="ico">🏭</div>
-          <h3>Заводы и экономика</h3>
-          <p>Стройте заводы, зарабатывайте деньги и производите технику. Теперь есть отдельный завод для Flamingo.</p>
-          <span class="pill">Новая графика</span>
+          <h3 data-i18n="c3_h"></h3>
+          <p data-i18n="c3_p"></p>
+          <span class="pill" data-i18n="c3_pill"></span>
         </div>
-        <div class="card rv">
+        <div class="card hud rv">
           <div class="ico">🗺️</div>
-          <h3>Большая карта</h3>
-          <p>Масштабируйте от всей страны до отдельных районов. Камера плавная, а карта ограничена границами театра действий.</p>
+          <h3 data-i18n="c4_h"></h3>
+          <p data-i18n="c4_p"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- АРСЕНАЛ -->
+  <section id="arsenal">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <small data-i18n="ar_small"></small>
+        <h2 data-i18n="ar_h"></h2>
+        <p data-i18n="ar_p"></p>
+      </div>
+      <div class="arsenal">
+        <div class="unit hot2 hud rv">
+          <span class="pill red" data-i18n="new22"></span>
+          <div class="code">МиГ-31К</div>
+          <p data-i18n="u1_p"></p>
+          <svg viewBox="0 0 300 56" fill="none" stroke="#ff4a3d" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M10 28 L130 24 L215 8 L228 24 L290 28 L228 32 L215 48 L130 32 Z"/>
+            <path d="M130 24 L150 28 L130 32" opacity=".6"/>
+          </svg>
+          <div class="bgnum">31</div>
+        </div>
+        <div class="unit hot hud rv">
+          <span class="pill" data-i18n="new21"></span>
+          <div class="code">FP-5 Flamingo</div>
+          <p data-i18n="u2_p"></p>
+          <svg viewBox="0 0 300 56" fill="none" stroke="#ffc62e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M8 28 L250 28 L292 28 L250 24 L226 6 L206 6 L224 24 L40 24 L20 12 L10 12 L18 28 L10 44 L20 44 L40 32 L224 32 L206 50 L226 50 L250 32 L292 28"/>
+          </svg>
+          <div class="bgnum">FP</div>
+        </div>
+        <div class="unit hud rv">
+          <span class="pill" data-i18n="new21"></span>
+          <div class="code" data-i18n="u3_h"></div>
+          <p data-i18n="u3_p"></p>
+          <svg viewBox="0 0 300 56" fill="none" stroke="#2f8cff" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M10 40 L10 26 L90 26 L110 10 L170 10 L185 26 L290 26 L290 40 Z"/>
+            <circle cx="60" cy="44" r="8" fill="#05070a"/><circle cx="230" cy="44" r="8" fill="#05070a"/>
+            <path d="M120 10 L120 26 M190 26 L270 14" opacity=".6"/>
+          </svg>
+          <div class="bgnum">🛻</div>
         </div>
       </div>
     </div>
@@ -327,38 +367,47 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-s
   <section id="modes">
     <div class="wrap">
       <div class="sec-head rv">
-        <small>// Режимы</small>
-        <h2>Выберите свою войну</h2>
+        <small data-i18n="m_small"></small>
+        <h2 data-i18n="m_h"></h2>
+      </div>
+      <div class="tabs rv" id="tabs">
+        <button class="on" data-tab="0" data-i18n="m1_t"></button>
+        <button data-tab="1" data-i18n="m2_t"></button>
+        <button data-tab="2" data-i18n="m3_t"></button>
       </div>
 
-      <div class="modes">
-        <div class="mode rv">
-          <h3>Песочница</h3>
-          <p style="color:var(--muted)">Полная свобода: стройте, запускайте и экспериментируйте без ограничений.</p>
-          <ul>
-            <li>Большой стартовый бюджет</li>
-            <li>Любая техника доступна сразу</li>
-            <li>Идеально для проверки тактик</li>
-          </ul>
+      <div class="panel on" data-panel="0">
+        <div>
+          <h3 data-i18n="m1_t"></h3>
+          <p data-i18n="m1_p"></p>
         </div>
-        <div class="mode rv">
-          <h3>Режим против ИИ</h3>
-          <p style="color:var(--muted)">Противник сам запускает дроны и ракеты и пытается пробить вашу оборону.</p>
-          <ul>
-            <li>ИИ атакует волнами</li>
-            <li>Дроны кружат перед ударом</li>
-            <li>Полёты скрыты от глаз — видно только на радаре ПВО</li>
-          </ul>
+        <ul>
+          <li data-i18n="m1_l1"></li>
+          <li data-i18n="m1_l2"></li>
+          <li data-i18n="m1_l3"></li>
+        </ul>
+      </div>
+      <div class="panel" data-panel="1">
+        <div>
+          <h3 data-i18n="m2_t"></h3>
+          <p data-i18n="m2_p"></p>
         </div>
-        <div class="mode ua rv">
-          <h3>Украинский режим</h3>
-          <p style="color:var(--muted)">Играйте за Украину: HIMARS, дальнобойные удары и борьба с системами ПВО противника.</p>
-          <ul>
-            <li>Новая ракета FP-5 Flamingo</li>
-            <li>Пикап — пусковая установка Flamingo</li>
-            <li>Воздушные тревоги и сирены</li>
-          </ul>
+        <ul>
+          <li data-i18n="m2_l1"></li>
+          <li data-i18n="m2_l2"></li>
+          <li data-i18n="m2_l3"></li>
+        </ul>
+      </div>
+      <div class="panel" data-panel="2">
+        <div>
+          <h3 data-i18n="m3_t"></h3>
+          <p data-i18n="m3_p"></p>
         </div>
+        <ul>
+          <li data-i18n="m3_l1"></li>
+          <li data-i18n="m3_l2"></li>
+          <li data-i18n="m3_l3"></li>
+        </ul>
       </div>
     </div>
   </section>
@@ -367,27 +416,42 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-s
   <section id="updates">
     <div class="wrap">
       <div class="sec-head rv">
-        <small>// Журнал изменений</small>
-        <h2>Обновления</h2>
-        <p>Все изменения игры — от последнего к первому.</p>
+        <small data-i18n="u_small"></small>
+        <h2 data-i18n="u_h"></h2>
+        <p data-i18n="u_p"></p>
       </div>
 
       <div class="log">
         <div class="entry new rv">
-          <div class="date"><b>21.10.2026</b><span>НОВОЕ</span></div>
+          <div class="date">
+            <b>22.10.2026</b><span class="time">00:00</span>
+            <span class="badge" data-i18n="badge_new"></span>
+          </div>
           <div>
-            <h3>Обновление: FP-5 Flamingo</h3>
+            <h3 data-i18n="e2_h"></h3>
             <ul>
-              <li>В игру добавлена ракета <b>FP-5 Flamingo</b></li>
-              <li>Новый дизайн лобби</li>
-              <li>Новая графика</li>
-              <li>Новый завод для производства <b>Flamingo</b></li>
-              <li><b>Пикап</b> теперь запускает ракеты Flamingo</li>
-              <li>Весь интерфейс игры переведён на русский язык</li>
-              <li class="warn">
-                Теперь в <b>Украинском режиме</b> и в <b>режиме ИИ</b> полёт запущенных дронов
-                не виден на карте — обнаружить их может только <b>радар ПВО</b>.
-              </li>
+              <li data-i18n="e2_l1"></li>
+              <li data-i18n="e2_l2"></li>
+              <li data-i18n="e2_l3"></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="entry rv">
+          <div class="date">
+            <b>21.10.2026</b>
+            <span class="badge old" data-i18n="badge_prev"></span>
+          </div>
+          <div>
+            <h3 data-i18n="e1_h"></h3>
+            <ul>
+              <li data-i18n="e1_l1"></li>
+              <li data-i18n="e1_l2"></li>
+              <li data-i18n="e1_l3"></li>
+              <li data-i18n="e1_l4"></li>
+              <li data-i18n="e1_l5"></li>
+              <li data-i18n="e1_l6"></li>
+              <li class="warn" data-i18n="e1_warn"></li>
             </ul>
           </div>
         </div>
@@ -400,15 +464,18 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-s
     <div class="wrap">
       <div class="radar-box rv">
         <div>
-          <small style="font-family:'Roboto Mono',monospace;color:var(--green);letter-spacing:.2em;font-size:12px">// НОВАЯ МЕХАНИКА</small>
-          <h3>Невидимые дроны</h3>
-          <p>Дроны и ракеты в полёте больше не отображаются на карте. Следить за небом теперь может только радар ПВО.</p>
-          <p>Расставляйте радары грамотно — иначе удар застанет вас врасплох.</p>
+          <small style="font-family:'Roboto Mono',monospace;color:var(--green);letter-spacing:.2em;font-size:12px" data-i18n="r_small"></small>
+          <h3 data-i18n="r_h"></h3>
+          <p data-i18n="r_p1"></p>
+          <p data-i18n="r_p2"></p>
+          <div><span class="radar-state on" id="rs"></span></div>
+          <button class="btn btn-ghost btn-sm" id="rtoggle"></button>
         </div>
-        <div class="radar" aria-hidden="true">
-          <span class="blip" style="left:62%;top:28%;animation-delay:.4s"></span>
-          <span class="blip" style="left:30%;top:60%;animation-delay:1.6s"></span>
+        <div class="radar" id="radar" aria-hidden="true">
+          <span class="blip" style="left:62%;top:26%;animation-delay:.4s"></span>
+          <span class="blip" style="left:28%;top:60%;animation-delay:1.6s"></span>
           <span class="blip" style="left:70%;top:68%;animation-delay:2.7s"></span>
+          <span class="blip" style="left:44%;top:38%;animation-delay:3.1s"></span>
         </div>
       </div>
     </div>
@@ -417,70 +484,219 @@ footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-s
   <!-- ИГРАТЬ -->
   <section id="play" class="final">
     <div class="wrap">
-      <h2>Готовы к бою?</h2>
-      <p>Запустите игру и займите своё место в небе.</p>
-      <a href="#" class="btn btn-main" onclick="alert('Скоро: ссылка на игру');return false;">▶ Начать игру</a>
+      <h2 data-i18n="f_h"></h2>
+      <p data-i18n="f_p"></p>
+      <a href="#" class="btn btn-main" id="startBtn" data-i18n="btn_start2"></a>
     </div>
   </section>
 
 </main>
 
 <footer>
-  <div class="wrap">ERCOMODE AIRO WAR · 2026 · Все права защищены</div>
+  <div class="wrap">
+    <a class="tt" href="https://www.tiktok.com/@ercomade.airo.war" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M16.5 3c.3 2.4 1.7 4.2 4 4.5v3.3a7.6 7.6 0 0 1-4-1.2v6.1a6 6 0 1 1-6-6c.3 0 .7 0 1 .1v3.4a2.7 2.7 0 1 0 1.7 2.5V3h3.3Z" fill="#ffc62e"/></svg>
+      <div>
+        <small data-i18n="tt_label"></small>
+        <b>@ercomade.airo.war</b>
+      </div>
+    </a>
+    <div class="copy">ERCOMODE AIRO WAR · 2026</div>
+  </div>
 </footer>
 
 <script>
-/* появление блоков при прокрутке */
+/* ================= ПЕРЕВОДЫ ================= */
+const T = {
+ru:{
+ nav_about:"Об игре", nav_arsenal:"Арсенал", nav_modes:"Режимы", nav_updates:"Обновления", btn_play:"Играть",
+ tag:"ОБНОВЛЕНИЕ ОТ 22.10.2026 · МиГ-31К",
+ lead:"Тактическая 2D-стратегия о воздушной войне. Запускайте дроны и ракеты, стройте ПВО, заводы и пусковые на огромной карте — и решайте исход противостояния в небе.",
+ btn_start:"▶ Играть", btn_updates:"Список обновлений", btn_start2:"▶ Начать игру",
+ last_label:"Последнее обновление",
+ st1:"Карта", st2:"Режима игры", st3:"Языка в игре", st4:"Сайт и игра",
+ a_small:"// Об игре", a_h:"Небо решает всё",
+ a_p:"Вы управляете техникой, строите экономику и обороняете территорию. Каждый запуск — это решение, каждый перехват — шанс на победу.",
+ c1_h:"Дроны и ракеты", c1_p:"Реактивные дроны, крылатые и баллистические ракеты. У каждой цели своя скорость, высота и поведение в полёте.",
+ c2_h:"ПВО и радары", c2_p:"Покупайте системы ПВО и расставляйте их где угодно. Перехват зависит от дальности, скорости и точности.",
+ c3_h:"Заводы и экономика", c3_p:"Стройте заводы, зарабатывайте деньги и производите технику. Теперь есть отдельный завод для Flamingo.", c3_pill:"Новая графика",
+ c4_h:"Большая карта", c4_p:"Масштабируйте от всей страны до отдельных районов. Камера плавная, карта ограничена театром действий.",
+ ar_small:"// Арсенал", ar_h:"Новая техника",
+ ar_p:"Самое свежее пополнение арсенала — ракета FP-5 Flamingo, пикап-пусковая и самолёт МиГ-31К.",
+ new22:"НОВОЕ · 22.10.2026", new21:"НОВОЕ · 21.10.2026",
+ u1_p:"Скоростной самолёт МиГ-31К добавлен в игру в обновлении от 22.10.2026.",
+ u2_p:"Новая ракета Flamingo. Производится на отдельном заводе и запускается с пикапа.",
+ u3_h:"Пикап", u3_p:"Мобильная пусковая установка. Теперь умеет запускать ракеты FP-5 Flamingo.",
+ m_small:"// Режимы", m_h:"Выберите свою войну",
+ m1_t:"Песочница", m1_p:"Полная свобода: стройте, запускайте и экспериментируйте без ограничений.",
+ m1_l1:"Большой стартовый бюджет", m1_l2:"Любая техника доступна сразу", m1_l3:"Идеально для проверки тактик",
+ m2_t:"Режим ИИ", m2_p:"Противник сам запускает дроны и ракеты и пытается пробить вашу оборону.",
+ m2_l1:"ИИ атакует волнами", m2_l2:"Дроны кружат перед ударом", m2_l3:"Полёт скрыт от глаз — видно только на радаре ПВО",
+ m3_t:"Украинский режим", m3_p:"Играйте за Украину: дальнобойные удары и борьба с ПВО противника.",
+ m3_l1:"Ракета FP-5 Flamingo", m3_l2:"Пикап запускает Flamingo", m3_l3:"Самолёт МиГ-31К",
+ u_small:"// Журнал изменений", u_h:"Обновления", u_p:"Все изменения игры — от последнего к первому.",
+ badge_new:"НОВОЕ", badge_prev:"ПРЕДЫДУЩЕЕ",
+ e2_h:"Обновление: МиГ-31К",
+ e2_l1:"В игру добавлен самолёт <b>МиГ-31К</b>",
+ e2_l2:"В игру добавлен <b>украинский язык</b>",
+ e2_l3:"На сайте добавлен переключатель языка <b>RU / UA</b>",
+ e1_h:"Обновление: FP-5 Flamingo",
+ e1_l1:"В игру добавлена ракета <b>FP-5 Flamingo</b>",
+ e1_l2:"Новый дизайн лобби",
+ e1_l3:"Новая графика",
+ e1_l4:"Новый завод для производства <b>Flamingo</b>",
+ e1_l5:"<b>Пикап</b> теперь запускает ракеты Flamingo",
+ e1_l6:"Весь интерфейс игры переведён на русский язык",
+ e1_warn:"Теперь в <b>Украинском режиме</b> и в <b>режиме ИИ</b> полёт запущенных дронов не виден на карте — обнаружить их может только <b>радар ПВО</b>.",
+ r_small:"// НОВАЯ МЕХАНИКА", r_h:"Невидимые дроны",
+ r_p1:"Дроны и ракеты в полёте больше не отображаются на карте. Следить за небом теперь может только радар ПВО.",
+ r_p2:"Расставляйте радары грамотно — иначе удар застанет вас врасплох.",
+ rs_on:"РАДАР ВКЛЮЧЁН · ЦЕЛИ ВИДНЫ", rs_off:"РАДАР ВЫКЛЮЧЕН · НИЧЕГО НЕ ВИДНО",
+ rb_on:"Выключить радар", rb_off:"Включить радар",
+ f_h:"Готовы к бою?", f_p:"Запустите игру и займите своё место в небе.",
+ soon:"Скоро: ссылка на игру",
+ tt_label:"Мы в TikTok",
+ tick:["ОБНОВЛЕНИЕ 22.10.2026 — МиГ-31К","УКРАИНСКИЙ ЯЗЫК В ИГРЕ","FP-5 FLAMINGO","НОВЫЙ ЗАВОД FLAMINGO","ДРОНЫ ВИДНЫ ТОЛЬКО НА РАДАРЕ ПВО","TIKTOK: @ercomade.airo.war"]
+},
+ua:{
+ nav_about:"Про гру", nav_arsenal:"Арсенал", nav_modes:"Режими", nav_updates:"Оновлення", btn_play:"Грати",
+ tag:"ОНОВЛЕННЯ ВІД 22.10.2026 · МіГ-31К",
+ lead:"Тактична 2D-стратегія про повітряну війну. Запускайте дрони та ракети, будуйте ППО, заводи й пускові установки на величезній мапі — і вирішуйте результат протистояння в небі.",
+ btn_start:"▶ Грати", btn_updates:"Список оновлень", btn_start2:"▶ Почати гру",
+ last_label:"Останнє оновлення",
+ st1:"Мапа", st2:"Режими гри", st3:"Мови в грі", st4:"Сайт і гра",
+ a_small:"// Про гру", a_h:"Небо вирішує все",
+ a_p:"Ви керуєте технікою, будуєте економіку та обороняєте територію. Кожен запуск — це рішення, кожен перехват — шанс на перемогу.",
+ c1_h:"Дрони та ракети", c1_p:"Реактивні дрони, крилаті та балістичні ракети. Кожна ціль має свою швидкість, висоту та поведінку в польоті.",
+ c2_h:"ППО та радари", c2_p:"Купуйте системи ППО та розставляйте їх де завгодно. Перехват залежить від дальності, швидкості та точності.",
+ c3_h:"Заводи та економіка", c3_p:"Будуйте заводи, заробляйте гроші та виробляйте техніку. Тепер є окремий завод для Flamingo.", c3_pill:"Нова графіка",
+ c4_h:"Велика мапа", c4_p:"Масштабуйте від усієї країни до окремих районів. Камера плавна, мапа обмежена театром дій.",
+ ar_small:"// Арсенал", ar_h:"Нова техніка",
+ ar_p:"Найсвіжіше поповнення арсеналу — ракета FP-5 Flamingo, пікап-пускова та літак МіГ-31К.",
+ new22:"НОВЕ · 22.10.2026", new21:"НОВЕ · 21.10.2026",
+ u1_p:"Швидкісний літак МіГ-31К додано в гру в оновленні від 22.10.2026.",
+ u2_p:"Нова ракета Flamingo. Виготовляється на окремому заводі та запускається з пікапа.",
+ u3_h:"Пікап", u3_p:"Мобільна пускова установка. Тепер вміє запускати ракети FP-5 Flamingo.",
+ m_small:"// Режими", m_h:"Оберіть свою війну",
+ m1_t:"Пісочниця", m1_p:"Повна свобода: будуйте, запускайте та експериментуйте без обмежень.",
+ m1_l1:"Великий стартовий бюджет", m1_l2:"Будь-яка техніка доступна одразу", m1_l3:"Ідеально для перевірки тактик",
+ m2_t:"Режим ШІ", m2_p:"Противник сам запускає дрони та ракети й намагається пробити вашу оборону.",
+ m2_l1:"ШІ атакує хвилями", m2_l2:"Дрони кружляють перед ударом", m2_l3:"Політ прихований від очей — видно лише на радарі ППО",
+ m3_t:"Український режим", m3_p:"Грайте за Україну: далекобійні удари та боротьба з ППО противника.",
+ m3_l1:"Ракета FP-5 Flamingo", m3_l2:"Пікап запускає Flamingo", m3_l3:"Літак МіГ-31К",
+ u_small:"// Журнал змін", u_h:"Оновлення", u_p:"Усі зміни гри — від останнього до першого.",
+ badge_new:"НОВЕ", badge_prev:"ПОПЕРЕДНЄ",
+ e2_h:"Оновлення: МіГ-31К",
+ e2_l1:"У гру додано літак <b>МіГ-31К</b>",
+ e2_l2:"У гру додано <b>українську мову</b>",
+ e2_l3:"На сайті додано перемикач мови <b>RU / UA</b>",
+ e1_h:"Оновлення: FP-5 Flamingo",
+ e1_l1:"У гру додано ракету <b>FP-5 Flamingo</b>",
+ e1_l2:"Новий дизайн лобі",
+ e1_l3:"Нова графіка",
+ e1_l4:"Новий завод для виробництва <b>Flamingo</b>",
+ e1_l5:"<b>Пікап</b> тепер запускає ракети Flamingo",
+ e1_l6:"Увесь інтерфейс гри перекладено російською мовою",
+ e1_warn:"Тепер в <b>Українському режимі</b> та в <b>режимі ШІ</b> політ запущених дронів не видно на мапі — виявити їх може лише <b>радар ППО</b>.",
+ r_small:"// НОВА МЕХАНІКА", r_h:"Невидимі дрони",
+ r_p1:"Дрони та ракети в польоті більше не відображаються на мапі. Стежити за небом тепер може лише радар ППО.",
+ r_p2:"Розставляйте радари грамотно — інакше удар застане вас зненацька.",
+ rs_on:"РАДАР УВІМКНЕНО · ЦІЛІ ВИДНО", rs_off:"РАДАР ВИМКНЕНО · НІЧОГО НЕ ВИДНО",
+ rb_on:"Вимкнути радар", rb_off:"Увімкнути радар",
+ f_h:"Готові до бою?", f_p:"Запустіть гру та займіть своє місце в небі.",
+ soon:"Незабаром: посилання на гру",
+ tt_label:"Ми в TikTok",
+ tick:["ОНОВЛЕННЯ 22.10.2026 — МіГ-31К","УКРАЇНСЬКА МОВА В ГРІ","FP-5 FLAMINGO","НОВИЙ ЗАВОД FLAMINGO","ДРОНИ ВИДНО ЛИШЕ НА РАДАРІ ППО","TIKTOK: @ercomade.airo.war"]
+}};
+
+let lang = 'ru';
+try{ const s = localStorage.getItem('lang'); if(s==='ru'||s==='ua') lang = s; }catch(e){}
+let radarOn = true;
+
+function apply(){
+  const d = T[lang];
+  document.documentElement.lang = lang === 'ua' ? 'uk' : 'ru';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n');
+    if(d[k] !== undefined) el.innerHTML = d[k];
+  });
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on', b.dataset.lang===lang));
+  const items = d.tick.map(s=>'<span>◆ '+s+'</span>').join('');
+  document.getElementById('tk').innerHTML = items + items + items + items;
+  updRadar();
+}
+function updRadar(){
+  const d = T[lang];
+  const rs = document.getElementById('rs');
+  rs.textContent = radarOn ? d.rs_on : d.rs_off;
+  rs.className = 'radar-state ' + (radarOn ? 'on' : 'off');
+  document.getElementById('rtoggle').textContent = radarOn ? d.rb_on : d.rb_off;
+  document.getElementById('radar').classList.toggle('off', !radarOn);
+}
+document.querySelectorAll('.lang button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    lang = b.dataset.lang;
+    try{ localStorage.setItem('lang', lang); }catch(e){}
+    apply();
+  });
+});
+document.getElementById('rtoggle').addEventListener('click',()=>{ radarOn = !radarOn; updRadar(); });
+document.getElementById('startBtn').addEventListener('click',e=>{ e.preventDefault(); alert(T[lang].soon); });
+
+/* вкладки режимов */
+document.querySelectorAll('#tabs button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+    b.classList.add('on');
+    document.querySelector('.panel[data-panel="'+b.dataset.tab+'"]').classList.add('on');
+  });
+});
+
+/* полоса прокрутки */
+addEventListener('scroll',()=>{
+  const h = document.documentElement;
+  document.getElementById('bar').style.width = (h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+},{passive:true});
+
+/* появление блоков */
 const io = new IntersectionObserver(es=>{
   es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target);} });
 },{threshold:.12});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
-/* фон: летящие дроны и ракеты */
+/* фон: дроны и ракеты */
 const c = document.getElementById('fx');
 const x = c.getContext('2d');
-let W, H, items = [];
-function resize(){ W = c.width = innerWidth; H = c.height = innerHeight; }
-addEventListener('resize', resize); resize();
-
+let W,H,items=[];
+function resize(){ W=c.width=innerWidth; H=c.height=innerHeight; }
+addEventListener('resize',resize); resize();
 function spawn(){
-  const fromLeft = Math.random() < .5;
-  const missile = Math.random() < .35;
-  items.push({
-    x: fromLeft ? -40 : W + 40,
-    y: Math.random() * H * .8 + 20,
-    vx: (fromLeft ? 1 : -1) * (missile ? 2.6 : 1.3) * (0.7 + Math.random()*.7),
-    vy: (Math.random() - .5) * .25,
-    m: missile,
-    col: fromLeft ? '47,140,255' : '255,198,46',
-    trail: []
-  });
+  const L = Math.random()<.5, M = Math.random()<.35;
+  items.push({x:L?-40:W+40,y:Math.random()*H*.85+20,vx:(L?1:-1)*(M?2.6:1.3)*(.7+Math.random()*.7),vy:(Math.random()-.5)*.25,m:M,col:L?'47,140,255':'255,198,46',trail:[]});
 }
-for(let i=0;i<6;i++){ spawn(); items[i].x = Math.random()*W; }
-
-function loop(){
+for(let i=0;i<6;i++){ spawn(); items[i].x=Math.random()*W; }
+(function loop(){
   x.clearRect(0,0,W,H);
-  if(items.length < 12 && Math.random() < .02) spawn();
-  items = items.filter(o => o.x > -80 && o.x < W + 80);
+  if(items.length<12 && Math.random()<.02) spawn();
+  items = items.filter(o=>o.x>-80 && o.x<W+80);
   for(const o of items){
-    o.x += o.vx; o.y += o.vy;
-    o.trail.push([o.x,o.y]); if(o.trail.length > 50) o.trail.shift();
+    o.x+=o.vx; o.y+=o.vy;
+    o.trail.push([o.x,o.y]); if(o.trail.length>50) o.trail.shift();
     for(let i=0;i<o.trail.length;i++){
-      const a = i / o.trail.length * .35;
-      x.fillStyle = `rgba(${o.col},${a})`;
-      x.fillRect(o.trail[i][0], o.trail[i][1], 2, 2);
+      x.fillStyle='rgba('+o.col+','+(i/o.trail.length*.35)+')';
+      x.fillRect(o.trail[i][0],o.trail[i][1],2,2);
     }
-    x.save(); x.translate(o.x,o.y);
-    x.rotate(Math.atan2(o.vy,o.vx));
-    x.fillStyle = `rgba(${o.col},.9)`;
-    x.shadowColor = `rgb(${o.col})`; x.shadowBlur = 12;
+    x.save(); x.translate(o.x,o.y); x.rotate(Math.atan2(o.vy,o.vx));
+    x.fillStyle='rgba('+o.col+',.9)'; x.shadowColor='rgb('+o.col+')'; x.shadowBlur=12;
     if(o.m){ x.fillRect(-9,-1.5,18,3); }
     else { x.beginPath(); x.moveTo(8,0); x.lineTo(-6,-5); x.lineTo(-3,0); x.lineTo(-6,5); x.closePath(); x.fill(); }
     x.restore();
   }
   requestAnimationFrame(loop);
-}
-loop();
+})();
+
+apply();
 </script>
 </body>
 </html>
