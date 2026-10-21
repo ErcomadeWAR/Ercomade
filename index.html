@@ -1,1411 +1,486 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHEELIE WORLD | Ultimate Light Edition - v.4.4</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Ikonkalar -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* ==========================================
-           CSS VARIABLES & LIGHT CONFIGURATION
-           ================================---------- */
-        :root {
-            --bg-primary: #f8f9fc;
-            --bg-card: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --accent-pink: #ff007f;
-            --accent-blue: #0284c7;
-            --accent-gold: #d97706;
-            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05);
-            --shadow-hover: 0 20px 40px rgba(2, 132, 199, 0.15);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 10% 20%, rgba(2, 132, 199, 0.05) 0%, transparent 40%),
-                        radial-gradient(circle at 90% 80%, rgba(255, 0, 127, 0.05) 0%, transparent 40%);
-            z-index: -1;
-        }
-
-        /* YANGI: Tepada doimiy ko'rinib turuvchi jonli taymer paneli */
-        .top-demo-countdown-bar {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: white;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            border-bottom: 3px solid var(--accent-pink);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            z-index: 105;
-            flex-wrap: wrap;
-        }
-
-        .top-demo-countdown-bar i {
-            color: var(--accent-pink);
-            animation: pulseIcon 1.5s infinite;
-        }
-
-        @keyframes pulseIcon {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        .countdown-digits {
-            display: flex;
-            gap: 10px;
-        }
-
-        .digit-box {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 4px 10px;
-            border-radius: 8px;
-            letter-spacing: 1px;
-            font-weight: 900;
-            color: #38bdf8;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 50px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 2px solid #e2e8f0;
-            box-shadow: var(--shadow-soft);
-            z-index: 100;
-        }
-
-        .logo-nav {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3rem;
-            font-weight: 900;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #ff007f, #0284c7, #d97706);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 15px;
-        }
-
-        .nav-link {
-            background: #f1f5f9;
-            border: none;
-            color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            padding: 10px 18px;
-            border-radius: 14px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background: var(--accent-blue);
-            color: #ffffff;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
-            transform: translateY(-2px);
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .coin-balance {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: #fef3c7;
-            border: 2px solid #f59e0b;
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            color: #b45309;
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
-        }
-
-        .coin-balance i {
-            font-size: 1.2rem;
-            color: #d97706;
-        }
-
-        .user-auth-btn {
-            background: linear-gradient(135deg, #0284c7, #0369a1);
-            border: none;
-            color: white;
-            padding: 10px 22px;
-            border-radius: 14px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
-        }
-
-        .user-auth-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
-        }
-
-        .lang-switcher {
-            display: flex;
-            gap: 6px;
-        }
-
-        .lang-btn {
-            background: #e2e8f0;
-            border: none;
-            color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            transition: all 0.3s ease;
-        }
-
-        .lang-btn:hover {
-            background: var(--accent-pink);
-            color: white;
-        }
-
-        .page-content {
-            display: none;
-            max-width: 1050px;
-            margin: auto;
-            padding: 50px 20px;
-            text-align: center;
-            z-index: 10;
-            width: 100%;
-        }
-
-        .page-content.active-page {
-            display: block;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero-card {
-            background: var(--bg-card);
-            border: 2px solid #e2e8f0;
-            border-radius: 35px;
-            padding: 50px;
-            box-shadow: var(--shadow-soft);
-            position: relative;
-        }
-
-        .status-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff007f, #e11d48);
-            color: white;
-            padding: 8px 22px;
-            border-radius: 50px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
-        }
-
-        .hero-card h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 3.2rem;
-            font-weight: 900;
-            margin-bottom: 20px;
-            color: var(--text-main);
-        }
-
-        .hero-card p {
-            font-size: 1.15rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-            margin-bottom: 35px;
-        }
-
-        .sasha-dev-panel {
-            background: #f0fdf4;
-            border: 2px solid #22c55e;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 30px;
-            text-align: left;
-            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
-        }
-
-        .sasha-dev-panel h4 {
-            font-family: 'Montserrat', sans-serif;
-            color: #15803d;
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sasha-dev-panel p {
-            font-size: 0.95rem;
-            color: #166534;
-            margin-bottom: 8px;
-        }
-
-        .daily-update-box {
-            background: #e0f2fe;
-            border: 2px dashed var(--accent-blue);
-            padding: 25px;
-            border-radius: 20px;
-            margin-bottom: 35px;
-            text-align: left;
-            position: relative;
-        }
-
-        .daily-update-box::before {
-            content: "UPDATE v.4.3";
-            position: absolute;
-            top: -12px;
-            right: 25px;
-            background: var(--accent-blue);
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-weight: 800;
-            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.3);
-        }
-
-        .daily-update-box h3 {
-            font-family: 'Montserrat', sans-serif;
-            color: #0369a1;
-            font-size: 1.2rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .daily-update-box p {
-            font-size: 1rem;
-            color: #075985;
-            margin: 0;
-        }
-
-        .update-date-info {
-            font-size: 0.85rem;
-            color: #d97706;
-            margin-top: 10px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-        }
-
-        .specs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .spec-box {
-            background: #f8fafc;
-            border: 2px solid #e2e8f0;
-            padding: 22px;
-            border-radius: 18px;
-            text-align: left;
-            transition: 0.3s;
-        }
-
-        .spec-box:hover {
-            border-color: var(--accent-blue);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-        }
-
-        .spec-box span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            display: block;
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-        }
-
-        .spec-box strong {
-            font-size: 1.15rem;
-            color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-        }
-
-        .shop-section-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 900;
-            margin-bottom: 25px;
-            color: var(--text-main);
-        }
-
-        .discount-timer-banner {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            color: white;
-            padding: 15px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .timer-box {
-            background: rgba(0,0,0,0.15);
-            padding: 5px 12px;
-            border-radius: 8px;
-            color: #fff;
-        }
-
-        .promo-container {
-            background: #ffffff;
-            border: 2px solid #cbd5e1;
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 35px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            align-items: center;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .promo-input {
-            background: #f8fafc;
-            border: 2px solid #e2e8f0;
-            padding: 12px 20px;
-            border-radius: 12px;
-            color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            width: 280px;
-        }
-
-        .promo-input:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 10px rgba(2, 132, 199, 0.2);
-        }
-
-        .promo-btn {
-            background: var(--accent-blue);
-            border: none;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 12px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .promo-btn:hover {
-            background: #0369a1;
-            transform: scale(1.03);
-        }
-
-        .donate-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
-        }
-
-        .donate-card {
-            background: var(--bg-card);
-            border: 2px solid #e2e8f0;
-            border-radius: 25px;
-            padding: 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: 0.3s;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .donate-card.sale {
-            border-color: #f59e0b;
-        }
-
-        .sale-badge {
-            position: absolute;
-            top: 15px;
-            right: -30px;
-            background: #f59e0b;
-            color: white;
-            padding: 5px 35px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
-            font-weight: 900;
-            transform: rotate(45deg);
-        }
-
-        .donate-icon {
-            font-size: 3rem;
-            color: #d97706;
-            margin-bottom: 15px;
-        }
-
-        .donate-card h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            color: var(--text-main);
-        }
-
-        .price-area {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .old-price {
-            font-size: 1rem;
-            color: var(--text-muted);
-            text-decoration: line-through;
-        }
-
-        .current-price {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 900;
-            color: var(--accent-blue);
-        }
-
-        .donate-btn {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            border: none;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 14px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            width: 100%;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-        }
-
-        .donate-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-        }
-
-        .shop-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .shop-card {
-            background: var(--bg-card);
-            border: 2px solid #e2e8f0;
-            border-radius: 30px;
-            padding: 30px;
-            width: 350px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: var(--shadow-soft);
-            transition: 0.3s;
-        }
-
-        .shop-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--accent-pink);
-        }
-
-        .shop-card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 18px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .shop-card h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            color: var(--text-main);
-        }
-
-        .shop-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-        }
-
-        .price-buy-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #f8fafc;
-            padding: 12px 20px;
-            border-radius: 15px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .price {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: var(--accent-blue);
-        }
-
-        .buy-btn {
-            background: var(--accent-pink);
-            border: none;
-            color: white;
-            padding: 10px 22px;
-            border-radius: 12px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .buy-btn:hover {
-            background: #e11d48;
-            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.3);
-        }
-
-        .profile-card {
-            background: var(--bg-card);
-            border: 2px solid #e2e8f0;
-            border-radius: 30px;
-            padding: 40px;
-            max-width: 480px;
-            margin: auto;
-            text-align: center;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .profile-avatar {
-            font-size: 4.5rem;
-            color: var(--accent-blue);
-            margin-bottom: 20px;
-        }
-
-        .profile-card h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            color: var(--text-main);
-        }
-
-        .profile-info-box {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.1rem;
-            color: #b45309;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 700;
-        }
-
-        .logout-btn {
-            background: #ef4444;
-            border: none;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 14px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .logout-btn:hover {
-            background: #dc2626;
-            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(8px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-box {
-            background: var(--bg-card);
-            border: 2px solid #e2e8f0;
-            border-radius: 25px;
-            padding: 40px;
-            width: 90%;
-            max-width: 420px;
-            text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            transform: scale(0.9);
-            transition: 0.3s ease;
-        }
-
-        .modal-overlay.active .modal-box {
-            transform: scale(1);
-        }
-
-        .modal-box i.main-icon {
-            font-size: 3.5rem;
-            color: #f59e0b;
-            margin-bottom: 20px;
-        }
-
-        .modal-box h3 {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            color: var(--text-main);
-        }
-
-        .modal-box p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
-
-        .modal-input {
-            width: 100%;
-            background: #f8fafc;
-            border: 2px solid #cbd5e1;
-            padding: 12px 18px;
-            border-radius: 12px;
-            color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
-            margin-bottom: 15px;
-            outline: none;
-        }
-
-        .modal-input:focus {
-            border-color: var(--accent-blue);
-        }
-
-        .modal-btn {
-            background: var(--accent-blue);
-            border: none;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 12px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            font-size: 1.1rem;
-            cursor: pointer;
-            width: 100%;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.3);
-        }
-
-        .modal-btn:hover {
-            background: #0369a1;
-        }
-
-        .modal-switch-text {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-
-        .modal-switch-text span {
-            color: var(--accent-blue);
-            font-weight: 700;
-        }
-
-        footer {
-            text-align: center;
-            padding: 25px;
-            background: rgba(255, 255, 255, 0.9);
-            border-top: 2px solid #e2e8f0;
-            z-index: 10;
-        }
-
-        .footer-text {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: white;
-            text-decoration: none;
-            background: #0f172a;
-            border: 2px solid #0f172a;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2);
-        }
-
-        .social-link:hover {
-            background: var(--accent-pink);
-            border-color: var(--accent-pink);
-            transform: translateY(-2px);
-        }
-
-        @media(max-width: 768px) {
-            header { padding: 15px 20px; flex-direction: column; gap: 15px; }
-            .logo-nav { flex-direction: column; gap: 10px; }
-            .logo { font-size: 2.2rem; }
-            .hero-card h1 { font-size: 2.3rem; }
-            .top-demo-countdown-bar { font-size: 0.85rem; padding: 10px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ERCOMODE AIRO WAR — Тактическая 2D-стратегия</title>
+<meta name="description" content="Ercomode Airo War — 2D-стратегия про воздушную войну на карте. Песочница, режим против ИИ, Украинский режим.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#06080b;
+  --panel:#0d1218;
+  --panel2:#121a23;
+  --line:#1f2c3a;
+  --text:#d7e0ea;
+  --muted:#7d8c9c;
+  --blue:#2f8cff;
+  --yellow:#ffc62e;
+  --red:#ff4a3d;
+  --green:#3ddc84;
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+/* ---------- фон-радар ---------- */
+#fx{position:fixed;inset:0;z-index:0;pointer-events:none}
+.grid-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(47,140,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(47,140,255,.05) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 80%);
+}
+main,header,footer{position:relative;z-index:1}
+
+/* ---------- шапка ---------- */
+header.top{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(12px);
+  background:rgba(6,8,11,.72);
+  border-bottom:1px solid var(--line);
+}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{
+  font-family:'Oswald',sans-serif;font-weight:700;letter-spacing:.14em;
+  font-size:18px;display:flex;align-items:center;gap:10px;
+}
+.logo i{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--yellow);box-shadow:0 0 14px var(--yellow);
+  animation:pulse 1.8s infinite;
+}
+@keyframes pulse{50%{opacity:.35}}
+.nav ul{display:flex;gap:28px;list-style:none;font-size:14px;color:var(--muted)}
+.nav ul a:hover{color:#fff}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'Oswald',sans-serif;letter-spacing:.12em;text-transform:uppercase;
+  padding:13px 26px;border-radius:10px;font-weight:600;font-size:15px;
+  border:1px solid transparent;cursor:pointer;transition:.25s;
+}
+.btn-main{
+  background:linear-gradient(135deg,var(--yellow),#ff9d1c);color:#111;
+  box-shadow:0 8px 30px rgba(255,170,30,.28);
+}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 38px rgba(255,170,30,.45)}
+.btn-ghost{border-color:var(--line);color:var(--text);background:rgba(255,255,255,.02)}
+.btn-ghost:hover{border-color:var(--blue);color:#fff}
+
+/* ---------- hero ---------- */
+.hero{padding:96px 0 70px;text-align:center}
+.tag{
+  display:inline-block;font-family:'Roboto Mono',monospace;font-size:12px;
+  letter-spacing:.2em;color:var(--yellow);
+  border:1px solid rgba(255,198,46,.35);padding:7px 16px;border-radius:99px;
+  background:rgba(255,198,46,.06);margin-bottom:28px;
+}
+.hero h1{
+  font-family:'Oswald',sans-serif;font-weight:700;
+  font-size:clamp(44px,9vw,118px);line-height:.95;letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.hero h1 span{
+  display:block;
+  background:linear-gradient(90deg,var(--blue) 0 50%,var(--yellow) 50% 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p.lead{
+  max-width:680px;margin:28px auto 38px;color:var(--muted);font-size:18px;
+}
+.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.stats{
+  margin-top:64px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+}
+.stat{background:var(--panel);padding:26px 14px}
+.stat b{
+  display:block;font-family:'Oswald',sans-serif;font-size:36px;color:#fff;letter-spacing:.04em;
+}
+.stat small{font-family:'Roboto Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+
+/* ---------- секции ---------- */
+section{padding:84px 0}
+.sec-head{margin-bottom:44px}
+.sec-head small{
+  font-family:'Roboto Mono',monospace;color:var(--yellow);letter-spacing:.2em;font-size:12px;text-transform:uppercase;
+}
+.sec-head h2{
+  font-family:'Oswald',sans-serif;font-size:clamp(30px,5vw,48px);
+  text-transform:uppercase;letter-spacing:.05em;margin-top:6px;
+}
+.sec-head p{color:var(--muted);max-width:620px;margin-top:10px}
+
+/* ---------- карточки ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.card{
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;
+  position:relative;overflow:hidden;transition:.3s;
+}
+.card::before{
+  content:"";position:absolute;left:0;top:0;height:3px;width:100%;
+  background:linear-gradient(90deg,var(--blue),var(--yellow));
+  transform:scaleX(0);transform-origin:left;transition:.4s;
+}
+.card:hover{transform:translateY(-5px);border-color:#2a3d52}
+.card:hover::before{transform:scaleX(1)}
+.card .ico{
+  width:46px;height:46px;border-radius:12px;display:grid;place-items:center;
+  background:rgba(47,140,255,.1);border:1px solid rgba(47,140,255,.3);
+  font-size:22px;margin-bottom:18px;
+}
+.card h3{font-family:'Oswald',sans-serif;font-size:22px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.card p{color:var(--muted);font-size:15px}
+.card .pill{
+  display:inline-block;margin-top:16px;font-family:'Roboto Mono',monospace;
+  font-size:11px;letter-spacing:.12em;padding:4px 10px;border-radius:6px;
+  background:rgba(255,198,46,.1);color:var(--yellow);
+}
+
+/* ---------- режимы ---------- */
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.mode{
+  border:1px solid var(--line);border-radius:var(--radius);padding:34px;
+  background:
+    radial-gradient(circle at 100% 0,rgba(47,140,255,.14),transparent 55%),
+    var(--panel);
+}
+.mode.ua{background:radial-gradient(circle at 100% 0,rgba(255,198,46,.16),transparent 55%),var(--panel)}
+.mode h3{font-family:'Oswald',sans-serif;font-size:26px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+.mode ul{list-style:none;margin-top:14px}
+.mode li{padding:7px 0 7px 24px;position:relative;color:var(--muted);font-size:15px}
+.mode li::before{content:"▸";position:absolute;left:0;color:var(--yellow)}
+
+/* ---------- обновления ---------- */
+.log{display:flex;flex-direction:column;gap:22px}
+.entry{
+  display:grid;grid-template-columns:170px 1fr;gap:26px;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:30px;
+}
+.entry.new{border-color:rgba(255,198,46,.5);box-shadow:0 0 50px rgba(255,198,46,.07)}
+.date{font-family:'Roboto Mono',monospace}
+.date b{display:block;font-size:22px;color:#fff}
+.date span{
+  display:inline-block;margin-top:8px;font-size:11px;letter-spacing:.14em;
+  padding:4px 10px;border-radius:6px;background:var(--yellow);color:#111;font-weight:700;
+}
+.entry h3{font-family:'Oswald',sans-serif;font-size:26px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}
+.entry ul{list-style:none}
+.entry li{
+  padding:10px 0 10px 28px;position:relative;border-bottom:1px dashed var(--line);color:var(--text);
+}
+.entry li:last-child{border-bottom:0}
+.entry li::before{content:"✦";position:absolute;left:0;color:var(--yellow)}
+.entry li.warn{
+  margin-top:10px;padding:16px 18px 16px 46px;border:1px solid rgba(255,74,61,.4);
+  border-radius:10px;background:rgba(255,74,61,.07);
+}
+.entry li.warn::before{content:"📡";left:14px;color:var(--red)}
+.entry li b{color:#fff}
+
+/* ---------- радар-блок ---------- */
+.radar-box{
+  display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:44px;
+}
+.radar{
+  width:100%;max-width:340px;aspect-ratio:1;margin:0 auto;border-radius:50%;position:relative;
+  background:
+    radial-gradient(circle,transparent 24%,rgba(61,220,132,.18) 25%,transparent 26%),
+    radial-gradient(circle,transparent 49%,rgba(61,220,132,.18) 50%,transparent 51%),
+    radial-gradient(circle,transparent 74%,rgba(61,220,132,.18) 75%,transparent 76%),
+    radial-gradient(circle,#0a1a12,#050b08);
+  border:2px solid rgba(61,220,132,.5);
+  box-shadow:0 0 60px rgba(61,220,132,.15) inset;
+  overflow:hidden;
+}
+.radar::before{
+  content:"";position:absolute;inset:0;
+  background:conic-gradient(from 0deg,rgba(61,220,132,.55),transparent 28%);
+  animation:spin 3.6s linear infinite;
+}
+.radar::after{
+  content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(61,220,132,.2);
+  box-shadow:0 0 0 0 transparent;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.blip{
+  position:absolute;width:9px;height:9px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 12px var(--green);animation:blip 3.6s infinite;
+}
+@keyframes blip{0%,100%{opacity:0}8%{opacity:1}60%{opacity:0}}
+.radar-box h3{font-family:'Oswald',sans-serif;font-size:30px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px}
+.radar-box p{color:var(--muted);margin-bottom:12px}
+
+/* ---------- футер ---------- */
+.final{text-align:center}
+.final h2{font-family:'Oswald',sans-serif;font-size:clamp(32px,6vw,60px);text-transform:uppercase;letter-spacing:.05em}
+.final p{color:var(--muted);margin:14px 0 30px}
+footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:13px;text-align:center;font-family:'Roboto Mono',monospace}
+
+/* ---------- появление ---------- */
+.rv{opacity:0;transform:translateY(26px);transition:.8s}
+.rv.on{opacity:1;transform:none}
+
+@media(max-width:860px){
+  .nav ul{display:none}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .entry{grid-template-columns:1fr}
+  .radar-box{grid-template-columns:1fr;padding:28px}
+}
+</style>
 </head>
 <body>
 
-    <!-- YANGI: Tepada doimiy ko'rinib turuvchi sekundigacha o'tuvchi 4 kunlik demo taymer paneli -->
-    <div class="top-demo-countdown-bar">
-        <i class="fa-solid fa-hourglass-half"></i>
-        <span id="demoBarText">До выхода демо-версии осталось:</span>
-        <div class="countdown-digits">
-            <span class="digit-box" id="demoDays">04</span>d
-            <span class="digit-box" id="demoHours">00</span>h
-            <span class="digit-box" id="demoMinutes">00</span>m
-            <span class="digit-box" id="demoSeconds">00</span>s
-        </div>
+<canvas id="fx"></canvas>
+<div class="grid-bg"></div>
+
+<header class="top">
+  <div class="wrap nav">
+    <a href="#top" class="logo"><i></i>ERCOMODE AIRO WAR</a>
+    <ul>
+      <li><a href="#about">Об игре</a></li>
+      <li><a href="#modes">Режимы</a></li>
+      <li><a href="#updates">Обновления</a></li>
+    </ul>
+    <a href="#play" class="btn btn-main">Играть</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap">
+      <div class="tag">● ВЕРСИЯ ОТ 21.10.2026 · ОБНОВЛЕНИЕ «FP-5 FLAMINGO»</div>
+      <h1>Ercomode<span>Airo War</span></h1>
+      <p class="lead">
+        Тактическая 2D-стратегия о воздушной войне. Запускайте дроны и ракеты,
+        стройте ПВО, заводы и пусковые площадки на огромной карте — и решайте
+        исход противостояния в небе.
+      </p>
+      <div class="cta">
+        <a href="#play" class="btn btn-main">▶ Играть</a>
+        <a href="#updates" class="btn btn-ghost">Список обновлений</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>2D</b><small>Карта</small></div>
+        <div class="stat"><b>3</b><small>Режима игры</small></div>
+        <div class="stat"><b>FP-5</b><small>Новая ракета</small></div>
+        <div class="stat"><b>RU</b><small>Полный русский язык</small></div>
+      </div>
     </div>
+  </div>
 
-    <header>
-        <div class="logo-nav">
-            <div class="logo">Wheelie World</div>
-            <nav class="nav-menu">
-                <button class="nav-link active" onclick="switchPage('home', this)" id="navHomeBtn">
-                    <i class="fa-solid fa-house"></i> <span id="menuHomeText">Главная</span>
-                </button>
-                <button class="nav-link" onclick="switchPage('donate', this)" id="navDonateBtn">
-                    <i class="fa-solid fa-coins"></i> <span id="menuDonateText">Монет Шоу</span>
-                </button>
-                <button class="nav-link" onclick="switchPage('shop', this)" id="navShopBtn">
-                    <i class="fa-solid fa-store"></i> <span id="menuShopText">Магазин</span>
-                </button>
-            </nav>
+  <!-- ОБ ИГРЕ -->
+  <section id="about">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <small>// Об игре</small>
+        <h2>Небо решает всё</h2>
+        <p>Вы управляете техникой, строите экономику и обороняете территорию. Каждый запуск — это решение, каждый перехват — шанс на победу.</p>
+      </div>
+
+      <div class="cards">
+        <div class="card rv">
+          <div class="ico">🚀</div>
+          <h3>Дроны и ракеты</h3>
+          <p>Реактивные дроны, баллистические и крылатые ракеты. У каждой цели своя скорость, высота и поведение в полёте.</p>
+          <span class="pill">Новое: FP-5 Flamingo</span>
         </div>
-        <div class="header-right">
-            <div class="coin-balance">
-                <i class="fa-solid fa-coins"></i> <span id="userCoinsDisplay">0</span>
-            </div>
-            <button class="user-auth-btn" id="authHeaderBtn" onclick="openAuthModal()">Войти</button>
-            <div class="lang-switcher">
-                <button class="lang-btn" onclick="changeLang('ru')">RU</button>
-                <button class="lang-btn" onclick="changeLang('en')">EN</button>
-                <button class="lang-btn" onclick="changeLang('ua')">UA</button>
-            </div>
+        <div class="card rv">
+          <div class="ico">📡</div>
+          <h3>ПВО и радары</h3>
+          <p>Покупайте системы ПВО и расставляйте их где угодно. Перехват зависит от дальности, скорости и точности.</p>
         </div>
-    </header>
-
-    <div id="homePage" class="page-content active-page">
-        <div class="hero-card">
-            <div class="status-badge" id="statusText">🎮 Игра в разработке (Скоро релиз)</div>
-            
-            <h1 id="mainTitle">Wheelie World</h1>
-            <p id="mainDesc">
-                Самый экстремальный симулятор трюков на питбайках и электросамокатах! Дерзкие вилли, ночные улицы, полный тюнинг и адреналин. Проект находится в активной разработке!
-            </p>
-
-            <div class="sasha-dev-panel">
-                <h4 id="sashaDevHeader"><i class="fa-solid fa-circle-info"></i> ИНФОРМАЦИЯ ОТ SASHA DEV:</h4>
-                <p id="sashaDevText1">Точная дата выхода полноценного проекта (Full Project) пока не объявлена.</p>
-                <p id="sashaDevText2">Релиз игры планируется для платформ: <strong>Android / PC</strong>.</p>
-                <p id="sashaDevText3">Демоверсия игры станет доступна в ближайшие дни!</p>
-            </div>
-
-            <div class="daily-update-box" id="updateBoxDiv">
-                <h3 id="updateHeader"><i class="fa-solid fa-rocket"></i> ПАТЧНОУТ v.4.3:</h3>
-                <p id="updateDescText">Добавлена физика Pitbike A07X, расширен ночной город и оптимизированы текстуры!</p>
-                <div class="update-date-info" id="updateDateText">Дата последнего обновления: 04.10.2026</div>
-            </div>
-
-            <div class="specs-grid">
-                <div class="spec-box">
-                    <span id="engineLabel">Игровой движок</span>
-                    <strong id="engineText">Неизвестно</strong>
-                </div>
-                <div class="spec-box">
-                    <span id="platformLabel">Платформы</span>
-                    <strong id="platformText">Android / PC</strong>
-                </div>
-                <div class="spec-box">
-                    <span id="statusLabel">Статус</span>
-                    <strong id="statusBoxText">Разработка</strong>
-                </div>
-            </div>
+        <div class="card rv">
+          <div class="ico">🏭</div>
+          <h3>Заводы и экономика</h3>
+          <p>Стройте заводы, зарабатывайте деньги и производите технику. Теперь есть отдельный завод для Flamingo.</p>
+          <span class="pill">Новая графика</span>
         </div>
+        <div class="card rv">
+          <div class="ico">🗺️</div>
+          <h3>Большая карта</h3>
+          <p>Масштабируйте от всей страны до отдельных районов. Камера плавная, а карта ограничена границами театра действий.</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div id="donatePage" class="page-content">
-        <h2 class="shop-section-title" id="donateTitleText">МАГАЗИН МОНЕТ И ДОНАТ</h2>
-        
-        <div class="discount-timer-banner">
-            <i class="fa-solid fa-fire"></i> <span id="timerText">Скидки завершатся через:</span>
-            <div class="timer-box" id="countdownTimer">30d 23h 59m</div>
+  <!-- РЕЖИМЫ -->
+  <section id="modes">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <small>// Режимы</small>
+        <h2>Выберите свою войну</h2>
+      </div>
+
+      <div class="modes">
+        <div class="mode rv">
+          <h3>Песочница</h3>
+          <p style="color:var(--muted)">Полная свобода: стройте, запускайте и экспериментируйте без ограничений.</p>
+          <ul>
+            <li>Большой стартовый бюджет</li>
+            <li>Любая техника доступна сразу</li>
+            <li>Идеально для проверки тактик</li>
+          </ul>
         </div>
-
-        <div class="promo-container">
-            <input type="text" id="promoInputCode" class="promo-input" placeholder="Введите промокод...">
-            <button class="promo-btn" onclick="applyPromoCode()" id="promoBtnText">Активировать</button>
+        <div class="mode rv">
+          <h3>Режим против ИИ</h3>
+          <p style="color:var(--muted)">Противник сам запускает дроны и ракеты и пытается пробить вашу оборону.</p>
+          <ul>
+            <li>ИИ атакует волнами</li>
+            <li>Дроны кружат перед ударом</li>
+            <li>Полёты скрыты от глаз — видно только на радаре ПВО</li>
+          </ul>
         </div>
-
-        <div class="donate-grid">
-            <div class="donate-card">
-                <div class="donate-icon"><i class="fa-solid fa-coins"></i></div>
-                <h3>100 Coins</h3>
-                <div class="price-area">
-                    <span class="current-price">$0.99</span>
-                </div>
-                <button class="donate-btn" onclick="openModal('stock')">Купить</button>
-            </div>
-
-            <div class="donate-card sale">
-                <div class="sale-badge">-25%</div>
-                <div class="donate-icon"><i class="fa-solid fa-coins"></i></div>
-                <h3>350 Coins</h3>
-                <div class="price-area">
-                    <span class="old-price">$3.99</span>
-                    <span class="current-price">$2.99</span>
-                </div>
-                <button class="donate-btn" onclick="openModal('stock')">Купить</button>
-            </div>
-
-            <div class="donate-card">
-                <div class="donate-icon"><i class="fa-solid fa-coins"></i></div>
-                <h3>600 Coins</h3>
-                <div class="price-area">
-                    <span class="current-price">$5.99</span>
-                </div>
-                <button class="donate-btn" onclick="openModal('stock')">Купить</button>
-            </div>
-
-            <div class="donate-card">
-                <div class="donate-icon"><i class="fa-solid fa-coins"></i></div>
-                <h3>1,000 Coins</h3>
-                <div class="price-area">
-                    <span class="current-price">$10.00</span>
-                </div>
-                <button class="donate-btn" onclick="openModal('stock')">Купить</button>
-            </div>
-
-            <div class="donate-card sale">
-                <div class="sale-badge">-10%</div>
-                <div class="donate-icon"><i class="fa-solid fa-coins"></i></div>
-                <h3>2,500 Coins</h3>
-                <div class="price-area">
-                    <span class="old-price">$25.99</span>
-                    <span class="current-price">$23.99</span>
-                </div>
-                <button class="donate-btn" onclick="openModal('stock')">Купить</button>
-            </div>
-
-            <div class="donate-card">
-                <div class="donate-icon"><i class="fa-solid fa-box-open"></i></div>
-                <h3>5,000 Coins + 2 Chests</h3>
-                <div class="price-area">
-                    <span class="current-price">$49.99</span>
-                </div>
-                <button class="donate-btn" onclick="openModal('stock')">Купить</button>
-            </div>
+        <div class="mode ua rv">
+          <h3>Украинский режим</h3>
+          <p style="color:var(--muted)">Играйте за Украину: HIMARS, дальнобойные удары и борьба с системами ПВО противника.</p>
+          <ul>
+            <li>Новая ракета FP-5 Flamingo</li>
+            <li>Пикап — пусковая установка Flamingo</li>
+            <li>Воздушные тревоги и сирены</li>
+          </ul>
         </div>
+      </div>
     </div>
+  </section>
 
-    <div id="shopPage" class="page-content">
-        <h2 class="shop-section-title" id="shopPageMainTitle">ИГРОВОЙ ТРАНСПОРТ</h2>
-        <div class="shop-container">
-            <div class="shop-card">
-                <img src="https://i.ibb.co/1G29x7b/red-pitbike.jpg" alt="Pitbike A07X" id="pitbikeImg" onerror="this.src='https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=600&auto=format&fit=crop'">
-                <h2>+1 Pitbike A07X</h2>
-                <p id="shopItemDesc1">Новейший эксклюзивный питбайк модели A07X с улучшенной физикой вилли!</p>
-                <div class="price-buy-row">
-                    <span class="price">$7.99</span>
-                    <button class="buy-btn" onclick="openModal('stock')" id="buyBtnText1">Купить</button>
-                </div>
-            </div>
+  <!-- ОБНОВЛЕНИЯ -->
+  <section id="updates">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <small>// Журнал изменений</small>
+        <h2>Обновления</h2>
+        <p>Все изменения игры — от последнего к первому.</p>
+      </div>
+
+      <div class="log">
+        <div class="entry new rv">
+          <div class="date"><b>21.10.2026</b><span>НОВОЕ</span></div>
+          <div>
+            <h3>Обновление: FP-5 Flamingo</h3>
+            <ul>
+              <li>В игру добавлена ракета <b>FP-5 Flamingo</b></li>
+              <li>Новый дизайн лобби</li>
+              <li>Новая графика</li>
+              <li>Новый завод для производства <b>Flamingo</b></li>
+              <li><b>Пикап</b> теперь запускает ракеты Flamingo</li>
+              <li>Весь интерфейс игры переведён на русский язык</li>
+              <li class="warn">
+                Теперь в <b>Украинском режиме</b> и в <b>режиме ИИ</b> полёт запущенных дронов
+                не виден на карте — обнаружить их может только <b>радар ПВО</b>.
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
     </div>
+  </section>
 
-    <div id="profilePage" class="page-content">
-        <div class="profile-card">
-            <div class="profile-avatar"><i class="fa-solid fa-user-ninja"></i></div>
-            <h2 id="profileUsernameDisplay">GamerName</h2>
-            <div class="profile-info-box">
-                <span id="profileCoinLabel">Ваш баланс:</span>
-                <strong id="profileCoinsVal">0 Coins</strong>
-            </div>
-            <button class="logout-btn" onclick="logoutUser()" id="logoutBtnText">Выйти из аккаунта</button>
+  <!-- РАДАР -->
+  <section>
+    <div class="wrap">
+      <div class="radar-box rv">
+        <div>
+          <small style="font-family:'Roboto Mono',monospace;color:var(--green);letter-spacing:.2em;font-size:12px">// НОВАЯ МЕХАНИКА</small>
+          <h3>Невидимые дроны</h3>
+          <p>Дроны и ракеты в полёте больше не отображаются на карте. Следить за небом теперь может только радар ПВО.</p>
+          <p>Расставляйте радары грамотно — иначе удар застанет вас врасплох.</p>
         </div>
-    </div>
-
-    <div class="modal-overlay" id="outOfStockModal">
-        <div class="modal-box">
-            <i class="fa-solid fa-triangle-exclamation main-icon"></i>
-            <h3 id="modalTitle">Упс! Товар закончился</h3>
-            <p id="modalDesc">К сожалению, этот товар временно отсутствует на складе (Нет в наличии).</p>
-            <button class="modal-btn" onclick="closeModal('stock')">OK</button>
+        <div class="radar" aria-hidden="true">
+          <span class="blip" style="left:62%;top:28%;animation-delay:.4s"></span>
+          <span class="blip" style="left:30%;top:60%;animation-delay:1.6s"></span>
+          <span class="blip" style="left:70%;top:68%;animation-delay:2.7s"></span>
         </div>
+      </div>
     </div>
+  </section>
 
-    <div class="modal-overlay" id="authModal">
-        <div class="modal-box">
-            <i class="fa-solid fa-user-shield main-icon" style="color: var(--accent-blue);"></i>
-            <h3 id="authModalTitle">Регистрация в игре</h3>
-            <p id="authModalDesc">Введите логин и пароль для сохранения аккаунта и баланса монет.</p>
-            
-            <input type="text" id="authUsernameInput" class="modal-input" placeholder="Имя (Логин)...">
-            <input type="password" id="authPasswordInput" class="modal-input" placeholder="Пароль...">
-            
-            <button class="modal-btn" id="authSubmitBtn" onclick="handleAuthSubmit()">Зарегистрироваться</button>
-            <div class="modal-switch-text" id="authSwitchText" onclick="toggleAuthMode()">
-                Уже есть аккаунт? <span>Войти</span>
-            </div>
-        </div>
+  <!-- ИГРАТЬ -->
+  <section id="play" class="final">
+    <div class="wrap">
+      <h2>Готовы к бою?</h2>
+      <p>Запустите игру и займите своё место в небе.</p>
+      <a href="#" class="btn btn-main" onclick="alert('Скоро: ссылка на игру');return false;">▶ Начать игру</a>
     </div>
+  </section>
 
-    <footer>
-        <p class="footer-text" id="footerText">Официальный TikTok разработчика для связи:</p>
-        <a href="https://www.tiktok.com/@wheelie_worlds" target="_blank" class="social-link">
-            <i class="fa-brands fa-tiktok"></i> @wheelie_worlds
-        </a>
-    </footer>
+</main>
 
-    <script>
-        // Barcha foydalanuvchilar bazasini va joriy foydalanuvchini boshqarish
-        let allUsers = JSON.parse(localStorage.getItem('ww_all_users')) || {};
-        let currentUsername = localStorage.getItem('ww_current_user') || null;
-        let currentUser = currentUsername && allUsers[currentUsername] ? allUsers[currentUsername] : null;
+<footer>
+  <div class="wrap">ERCOMODE AIRO WAR · 2026 · Все права защищены</div>
+</footer>
 
-        let isLoginMode = false;
-        let promoUsed = localStorage.getItem('ww_promo') === 'true';
-        const SECRET_PROMO_HASH = "c29vbjIwMjc="; // "soon2027"
+<script>
+/* появление блоков при прокрутке */
+const io = new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target);} });
+},{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
-        // Har 0.1 sekundda (100ms) avtomatik saqlash va balansni yangilash
-        setInterval(() => {
-            if (currentUser && currentUsername) {
-                allUsers[currentUsername] = currentUser;
-                localStorage.setItem('ww_all_users', JSON.stringify(allUsers));
-                localStorage.setItem('ww_current_user', currentUsername);
-                document.getElementById('userCoinsDisplay').innerText = currentUser.coins;
-            } else {
-                document.getElementById('userCoinsDisplay').innerText = "0";
-            }
-        }, 100);
+/* фон: летящие дроны и ракеты */
+const c = document.getElementById('fx');
+const x = c.getContext('2d');
+let W, H, items = [];
+function resize(){ W = c.width = innerWidth; H = c.height = innerHeight; }
+addEventListener('resize', resize); resize();
 
-        window.onload = function() {
-            updateAuthUI();
-            startTimer();
-            startDemoCountdown();
-        };
+function spawn(){
+  const fromLeft = Math.random() < .5;
+  const missile = Math.random() < .35;
+  items.push({
+    x: fromLeft ? -40 : W + 40,
+    y: Math.random() * H * .8 + 20,
+    vx: (fromLeft ? 1 : -1) * (missile ? 2.6 : 1.3) * (0.7 + Math.random()*.7),
+    vy: (Math.random() - .5) * .25,
+    m: missile,
+    col: fromLeft ? '47,140,255' : '255,198,46',
+    trail: []
+  });
+}
+for(let i=0;i<6;i++){ spawn(); items[i].x = Math.random()*W; }
 
-        function updateAuthUI() {
-            const authBtn = document.getElementById('authHeaderBtn');
-            if (currentUser) {
-                authBtn.innerText = currentUsername;
-                authBtn.setAttribute('onclick', "switchPage('profile', document.getElementById('navHomeBtn'))");
-                document.getElementById('profileUsernameDisplay').innerText = currentUsername;
-                document.getElementById('profileCoinsVal').innerText = currentUser.coins + " Coins";
-            } else {
-                authBtn.innerText = "Войти";
-                authBtn.setAttribute('onclick', "openAuthModal()");
-            }
-        }
-
-        function switchPage(pageId, btnElement) {
-            if(pageId === 'profile' && !currentUser) {
-                openAuthModal();
-                return;
-            }
-            document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active-page'));
-            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
-
-            if(pageId === 'home') {
-                document.getElementById('homePage').classList.add('active-page');
-            } else if(pageId === 'donate') {
-                document.getElementById('donatePage').classList.add('active-page');
-            } else if(pageId === 'shop') {
-                document.getElementById('shopPage').classList.add('active-page');
-            } else if(pageId === 'profile') {
-                document.getElementById('profilePage').classList.add('active-page');
-            }
-            if(btnElement) btnElement.classList.add('active');
-        }
-
-        function openModal(type) {
-            if(type === 'stock') {
-                document.getElementById('outOfStockModal').classList.add('active');
-            }
-        }
-        function closeModal(type) {
-            if(type === 'stock') {
-                document.getElementById('outOfStockModal').classList.remove('active');
-            }
-        }
-
-        function openAuthModal() {
-            document.getElementById('authModal').classList.add('active');
-        }
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.remove('active');
-        }
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            const title = document.getElementById('authModalTitle');
-            const desc = document.getElementById('authModalDesc');
-            const btn = document.getElementById('authSubmitBtn');
-            const switchText = document.getElementById('authSwitchText');
-
-            if(isLoginMode) {
-                title.innerText = "Вход в аккаунт";
-                desc.innerText = "Введите свой логин и пароль.";
-                btn.innerText = "Войти";
-                switchText.innerHTML = "Нет аккаунта? <span>Зарегистрироваться</span>";
-            } else {
-                title.innerText = "Регистрация в игре";
-                desc.innerText = "Введите логин и пароль для сохранения баланса.";
-                btn.innerText = "Зарегистрироваться";
-                switchText.innerHTML = "Уже есть аккаунт? <span>Войти</span>";
-            }
-        }
-
-        function handleAuthSubmit() {
-            const username = document.getElementById('authUsernameInput').value.trim();
-            const password = document.getElementById('authPasswordInput').value.trim();
-
-            if(!username || !password) {
-                alert("Заполните все поля!");
-                return;
-            }
-
-            if(!isLoginMode) {
-                // REGISTRATION MODE: Check if account already exists
-                if(allUsers[username]) {
-                    alert("Такой аккаунт уже существует. Измените имя.");
-                    return;
-                }
-                // Create new account
-                allUsers[username] = { password: password, coins: 0 };
-                currentUsername = username;
-                currentUser = allUsers[username];
-                localStorage.setItem('ww_all_users', JSON.stringify(allUsers));
-                localStorage.setItem('ww_current_user', currentUsername);
-                alert("Регистрация успешна!");
-            } else {
-                // LOGIN MODE: Check if account exists and password matches
-                if(!allUsers[username]) {
-                    alert("Такого аккаунта не существует!");
-                    return;
-                }
-                if(allUsers[username].password !== password) {
-                    alert("Неверный пароль!");
-                    return;
-                }
-                // Login successful, restore coins and data
-                currentUsername = username;
-                currentUser = allUsers[username];
-                localStorage.setItem('ww_current_user', currentUsername);
-                alert("Успешный вход!");
-            }
-
-            updateAuthUI();
-            closeAuthModal();
-        }
-
-        function logoutUser() {
-            currentUsername = null;
-            currentUser = null;
-            localStorage.removeItem('ww_current_user');
-            updateAuthUI();
-            switchPage('home', document.getElementById('navHomeBtn'));
-        }
-
-        function applyPromoCode() {
-            if(!currentUser) {
-                alert("Войдите в аккаунт, чтобы использовать промокод!");
-                openAuthModal();
-                return;
-            }
-            const codeInput = document.getElementById('promoInputCode').value.trim();
-            
-            try {
-                if(btoa(codeInput) === SECRET_PROMO_HASH) {
-                    if(promoUsed) {
-                        alert("Вы уже использовали этот промокод!");
-                        return;
-                    }
-                    currentUser.coins += 100;
-                    promoUsed = true;
-                    localStorage.setItem('ww_promo', 'true');
-                    alert("Поздравляем! Промокод активирован: +100 монет на ваш баланс!");
-                    updateAuthUI();
-                } else {
-                    alert("Неверный промокод!");
-                }
-            } catch(e) {
-                alert("Неверный промокод!");
-            }
-        }
-
-        function startTimer() {
-            let time = 30 * 24 * 60 * 60;
-            setInterval(() => {
-                let days = Math.floor(time / (3600 * 24));
-                let hours = Math.floor((time % (3600 * 24)) / 3600);
-                let minutes = Math.floor((time % 3600) / 60);
-                document.getElementById('countdownTimer').innerText = `${days}d ${hours}h ${minutes}m`;
-                if(time > 0) time--;
-            }, 1000);
-        }
-
-        // YANGI: Demo versiya uchun 4 kunlik jonli sekundomer taymeri
-        function startDemoCountdown() {
-            // 4 kunlik sekund miqdori (4 * 24 * 3600) yoki localStorage'dan olish
-            let demoTime = localStorage.getItem('ww_demo_time');
-            if (!demoTime) {
-                demoTime = 4 * 24 * 3600; // 4 kun
-            } else {
-                demoTime = parseInt(demoTime);
-            }
-
-            setInterval(() => {
-                if (demoTime > 0) {
-                    demoTime--;
-                }
-                localStorage.setItem('ww_demo_time', demoTime);
-
-                let days = Math.floor(demoTime / (3600 * 24));
-                let hours = Math.floor((demoTime % (3600 * 24)) / 3600);
-                let minutes = Math.floor((demoTime % 3600) / 60);
-                let seconds = demoTime % 60;
-
-                document.getElementById('demoDays').innerText = String(days).padStart(2, '0');
-                document.getElementById('demoHours').innerText = String(hours).padStart(2, '0');
-                document.getElementById('demoMinutes').innerText = String(minutes).padStart(2, '0');
-                document.getElementById('demoSeconds').innerText = String(seconds).padStart(2, '0');
-            }, 1000);
-        }
-
-        function changeLang(lang) {
-            const menuHomeText = document.getElementById('menuHomeText');
-            const menuDonateText = document.getElementById('menuDonateText');
-            const menuShopText = document.getElementById('menuShopText');
-            const statusText = document.getElementById('statusText');
-            const mainDesc = document.getElementById('mainDesc');
-            const sashaDevHeader = document.getElementById('sashaDevHeader');
-            const sashaDevText1 = document.getElementById('sashaDevText1');
-            const sashaDevText2 = document.getElementById('sashaDevText2');
-            const sashaDevText3 = document.getElementById('sashaDevText3');
-            const updateHeader = document.getElementById('updateHeader');
-            const updateDescText = document.getElementById('updateDescText');
-            const updateDateText = document.getElementById('updateDateText');
-            const engineLabel = document.getElementById('engineLabel');
-            const platformLabel = document.getElementById('platformLabel');
-            const statusLabel = document.getElementById('statusLabel');
-            const statusBoxText = document.getElementById('statusBoxText');
-            const donateTitleText = document.getElementById('donateTitleText');
-            const timerText = document.getElementById('timerText');
-            const promoBtnText = document.getElementById('promoBtnText');
-            const shopPageMainTitle = document.getElementById('shopPageMainTitle');
-            const shopItemDesc1 = document.getElementById('shopItemDesc1');
-            const buyBtnText1 = document.getElementById('buyBtnText1');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDesc = document.getElementById('modalDesc');
-            const profileCoinLabel = document.getElementById('profileCoinLabel');
-            const logoutBtnText = document.getElementById('logoutBtnText');
-            const footerText = document.getElementById('footerText');
-            const demoBarText = document.getElementById('demoBarText');
-
-            if(lang === 'ru') {
-                menuHomeText.innerText = "Главная";
-                menuDonateText.innerText = "Монет Шоу";
-                menuShopText.innerText = "Магазин";
-                statusText.innerText = "🎮 Игра в разработке (Скоро релиз)";
-                mainDesc.innerText = "Самый экстремальный симулятор трюков на питбайках и электросамокатах! Дерзкие вилли, ночные улицы, полный тюнинг и адреналин.";
-                sashaDevHeader.innerHTML = '<i class="fa-solid fa-circle-info"></i> ИНФОРМАЦИЯ ОТ SASHA DEV:';
-                sashaDevText1.innerText = "Точная дата выхода полноценного проекта (Full Project) пока не объявлена.";
-                sashaDevText2.innerHTML = "Релиз игры планируется для платформ: <strong>Android / PC</strong>.";
-                sashaDevText3.innerText = "Демоверсия игры станет доступна в ближайшие дни!";
-                updateHeader.innerHTML = '<i class="fa-solid fa-rocket"></i> ПАТЧНОУТ v.4.3:';
-                updateDescText.innerText = "Добавлена физика Pitbike A07X, расширен ночной город и оптимизированы текстуры!";
-                updateDateText.innerText = "Дата последнего обновления: 04.10.2026";
-                engineLabel.innerText = "Игровой движок";
-                platformLabel.innerText = "Платформы";
-                statusLabel.innerText = "Статус";
-                statusBoxText.innerText = "Разработка";
-                donateTitleText.innerText = "МАГАЗИН МОНЕТ И ДОНАТ";
-                timerText.innerText = "Скидки завершатся через:";
-                promoBtnText.innerText = "Активировать";
-                shopPageMainTitle.innerText = "ИГРОВОЙ ТРАНСПОРТ";
-                shopItemDesc1.innerText = "Новейший эксклюзивный питбайк модели A07X с улучшенной физикой вилли!";
-                buyBtnText1.innerText = "Купить";
-                modalTitle.innerText = "Упс! Товар закончился";
-                modalDesc.innerText = "К сожалению, этот товар временно отсутствует на складе (Нет в наличии).";
-                profileCoinLabel.innerText = "Ваш баланс:";
-                logoutBtnText.innerText = "Выйти из аккаунта";
-                footerText.innerText = "Официальный TikTok разработчика для связи:";
-                demoBarText.innerText = "До выхода демо-версии осталось:";
-            } 
-            else if(lang === 'en') {
-                menuHomeText.innerText = "Home";
-                menuDonateText.innerText = "Coin Shop";
-                menuShopText.innerText = "Shop";
-                statusText.innerText = "🎮 Game in Development (Coming Soon)";
-                mainDesc.innerText = "The most extreme stunt simulator on pitbikes and electric scooters! Daring wheelies, night streets, full tuning and adrenaline.";
-                sashaDevHeader.innerHTML = '<i class="fa-solid fa-circle-info"></i> INFO FROM SASHA DEV:';
-                sashaDevText1.innerText = "The exact release date for the full project has not been announced yet.";
-                sashaDevText2.innerHTML = "Game release is planned for platforms: <strong>Android / PC</strong>.";
-                sashaDevText3.innerText = "The demo version of the game will be available in the coming days!";
-                updateHeader.innerHTML = '<i class="fa-solid fa-rocket"></i> PATCH NOTES v.4.3:';
-                updateDescText.innerText = "Added Pitbike A07X physics, expanded night city and optimized textures!";
-                updateDateText.innerText = "Last update date: 10/04/2026";
-                engineLabel.innerText = "Game Engine";
-                platformLabel.innerText = "Platforms";
-                statusLabel.innerText = "Status";
-                statusBoxText.innerText = "Development";
-                donateTitleText.innerText = "COIN & DONATE SHOP";
-                timerText.innerText = "Discounts end in:";
-                promoBtnText.innerText = "Activate";
-                shopPageMainTitle.innerText = "GAME VEHICLES";
-                shopItemDesc1.innerText = "Newest exclusive A07X pitbike model with enhanced wheelie physics!";
-                buyBtnText1.innerText = "Buy";
-                modalTitle.innerText = "Oops! Out of Stock";
-                modalDesc.innerText = "Unfortunately, this item is temporarily out of stock (Нет в наличии).";
-                profileCoinLabel.innerText = "Your balance:";
-                logoutBtnText.innerText = "Log out";
-                footerText.innerText = "Official Developer TikTok for contact:";
-                demoBarText.innerText = "Demo version releases in:";
-            } 
-            else if(lang === 'ua') {
-                menuHomeText.innerText = "Головна";
-                menuDonateText.innerText = "Монети";
-                menuShopText.innerText = "Магазин";
-                statusText.innerText = "🎮 Гра в розробці (Скоро реліз)";
-                mainDesc.innerText = "Найекстремальніший симулятор трюків на пітбайках та електросамокатах! Зухвалі віллі, нічні вулиці, повний тюнінг та адреналін.";
-                sashaDevHeader.innerHTML = '<i class="fa-solid fa-circle-info"></i> ІНФОРМАЦІЯ ВІД SASHA DEV:';
-                sashaDevText1.innerText = "Точна дата виходу повноцінного проєкту (Full Project) поки не оголошена.";
-                sashaDevText2.innerHTML = "Реліз гри планується для платформ: <strong>Android / PC</strong>.";
-                sashaDevText3.innerText = "Демоверсія гри стане доступна найближчими днями!";
-                updateHeader.innerHTML = '<i class="fa-solid fa-rocket"></i> ПАТЧНОУТ v.4.3:';
-                updateDescText.innerText = "Додано фізику Pitbike A07X, розширено нічне місто та оптимізовано текстури!";
-                updateDateText.innerText = "Дата останнього оновлення: 04.10.2026";
-                engineLabel.innerText = "Ігровий рушій";
-                platformLabel.innerText = "Платформи";
-                statusLabel.innerText = "Статус";
-                statusBoxText.innerText = "Розробка";
-                donateTitleText.innerText = "МАГАЗИН МОНЕТ ТА ДОНАТ";
-                timerText.innerText = "Знижки закінчаться через:";
-                promoBtnText.innerText = "Активувати";
-                shopPageMainTitle.innerText = "ІГРОВИЙ ТРАНСПОРТ";
-                shopItemDesc1.innerText = "Найновіший ексклюзивний пітбайк моделі A07X з покращеною фізикою віллі!";
-                buyBtnText1.innerText = "Купити";
-                modalTitle.innerText = "Упс! Товар закінчився";
-                modalDesc.innerText = "На жаль, цей товар тимчасово відсутній на складі (Нет в наличии).";
-                profileCoinLabel.innerText = "Ваш баланс:";
-                logoutBtnText.innerText = "Вийти з акаунта";
-                footerText.innerText = "Офіційний TikTok розробника для зв'язку:";
-                demoBarText.innerText = "До виходу демо-версії залишилося:";
-            }
-        }
-    </script>
+function loop(){
+  x.clearRect(0,0,W,H);
+  if(items.length < 12 && Math.random() < .02) spawn();
+  items = items.filter(o => o.x > -80 && o.x < W + 80);
+  for(const o of items){
+    o.x += o.vx; o.y += o.vy;
+    o.trail.push([o.x,o.y]); if(o.trail.length > 50) o.trail.shift();
+    for(let i=0;i<o.trail.length;i++){
+      const a = i / o.trail.length * .35;
+      x.fillStyle = `rgba(${o.col},${a})`;
+      x.fillRect(o.trail[i][0], o.trail[i][1], 2, 2);
+    }
+    x.save(); x.translate(o.x,o.y);
+    x.rotate(Math.atan2(o.vy,o.vx));
+    x.fillStyle = `rgba(${o.col},.9)`;
+    x.shadowColor = `rgb(${o.col})`; x.shadowBlur = 12;
+    if(o.m){ x.fillRect(-9,-1.5,18,3); }
+    else { x.beginPath(); x.moveTo(8,0); x.lineTo(-6,-5); x.lineTo(-3,0); x.lineTo(-6,5); x.closePath(); x.fill(); }
+    x.restore();
+  }
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
 </body>
 </html>
