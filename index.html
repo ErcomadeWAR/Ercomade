@@ -3,482 +3,506 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WarHear Protection</title>
+<title>WarHear Protection — Official</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { overflow: hidden; font-family: 'Segoe UI', Arial, sans-serif; background: #05060a; color: #e0e0e0; }
-  #ui {
-    position: fixed; top: 16px; left: 16px; z-index: 10;
-    background: rgba(10, 14, 24, 0.85);
-    border: 1px solid rgba(80, 180, 255, 0.3);
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #05060a;
+    color: #d0d8e0;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Fon effekti */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 10%, rgba(30, 90, 160, 0.25), transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(160, 60, 40, 0.15), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Til almashtirish */
+  .lang-switch {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-bottom: 32px;
+  }
+  .lang-switch button {
+    padding: 6px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    background: transparent;
+    color: #7a9ab8;
+    border: 1px solid #2a4a6a;
+    border-radius: 4px;
+    transition: 0.2s;
+  }
+  .lang-switch button:hover { background: #12243a; color: #fff; }
+  .lang-switch button.active {
+    background: #1e5a8a;
+    border-color: #6ec8ff;
+    color: #fff;
+  }
+
+  /* Sarlavha */
+  header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  header h1 {
+    font-size: 42px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #6ec8ff;
+    text-shadow: 0 0 30px rgba(110, 200, 255, 0.4);
+    margin-bottom: 12px;
+  }
+  header .tagline {
+    font-size: 15px;
+    color: #7a8a9a;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  header .badge {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 6px 18px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    border: 1px solid #3a7aaa;
+    border-radius: 20px;
+    color: #8ab8d8;
+    background: rgba(30, 90, 138, 0.15);
+  }
+
+  /* Kartochkalar */
+  .card {
+    background: rgba(12, 18, 28, 0.8);
+    border: 1px solid rgba(60, 120, 180, 0.25);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    backdrop-filter: blur(4px);
+  }
+  .card h2 {
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6ec8ff;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(60, 120, 180, 0.2);
+  }
+
+  /* Ma'lumotlar jadvali */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+  .info-item {
+    background: rgba(20, 30, 45, 0.6);
+    border-left: 3px solid #3a7aaa;
+    border-radius: 4px;
+    padding: 14px 16px;
+  }
+  .info-item .label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #6a8aaa;
+    margin-bottom: 4px;
+  }
+  .info-item .value {
+    font-size: 15px;
+    color: #c8d8e8;
+  }
+
+  /* Texnologiya ro'yxati */
+  .tech-list { list-style: none; }
+  .tech-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(60, 120, 180, 0.1);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .tech-list li:last-child { border-bottom: none; }
+  .tech-list .tech-name {
+    color: #8ab8d8;
+    font-weight: 600;
+  }
+  .tech-list .tech-desc {
+    color: #7a8a9a;
+    font-size: 13px;
+    text-align: right;
+  }
+
+  /* Birliklar */
+  .units {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+  }
+  .unit {
+    background: rgba(20, 30, 45, 0.6);
+    border: 1px solid rgba(60, 120, 180, 0.2);
     border-radius: 8px;
-    padding: 14px 18px;
-    backdrop-filter: blur(6px);
-    min-width: 260px;
+    padding: 20px;
+    transition: 0.2s;
   }
-  #ui h1 { font-size: 18px; letter-spacing: 2px; color: #6ec8ff; margin-bottom: 4px; text-transform: uppercase; }
-  #ui .sub { font-size: 11px; color: #6a7a8a; margin-bottom: 12px; letter-spacing: 1px; }
-  #lang-switch { display: flex; gap: 6px; margin-bottom: 12px; }
-  #lang-switch button {
-    flex: 1; padding: 6px 0; font-size: 12px; cursor: pointer;
-    background: transparent; color: #8ab8d8; border: 1px solid #2a4a6a;
-    border-radius: 4px; transition: 0.2s;
+  .unit:hover {
+    border-color: #4a8aba;
+    background: rgba(24, 38, 56, 0.8);
   }
-  #lang-switch button:hover { background: #1a3a5a; color: #fff; }
-  #lang-switch button.active { background: #1e5a8a; border-color: #6ec8ff; color: #fff; }
-  .btn {
-    display: block; width: 100%; padding: 10px 0; margin-top: 8px;
-    background: linear-gradient(135deg, #0a2a4a, #1a4a7a);
-    border: 1px solid #3a7aaa; border-radius: 4px;
-    color: #c0e0ff; font-size: 13px; letter-spacing: 1px;
-    cursor: pointer; transition: 0.2s;
+  .unit .unit-icon { font-size: 28px; margin-bottom: 8px; }
+  .unit .unit-name {
+    font-size: 16px;
+    color: #c8d8e8;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
   }
-  .btn:hover { background: linear-gradient(135deg, #1a4a7a, #2a6aaa); border-color: #6ec8ff; color: #fff; }
-  .btn:active { transform: scale(0.98); }
-  #status { margin-top: 12px; font-size: 12px; color: #4a8a6a; min-height: 18px; }
-  .obj-count { font-size: 11px; color: #5a7a9a; margin-top: 6px; }
-  #crosshair {
-    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 20px; height: 20px; pointer-events: none; z-index: 5;
-    border: 1px solid rgba(110, 200, 255, 0.5); border-radius: 50%;
+  .unit .unit-type {
+    font-size: 11px;
+    color: #5a8aaa;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
   }
-  #crosshair::before, #crosshair::after {
-    content: ''; position: absolute; background: rgba(110, 200, 255, 0.6);
+  .unit .unit-status {
+    font-size: 13px;
+    color: #8ab8d8;
   }
-  #crosshair::before { width: 1px; height: 8px; top: 5px; left: 9px; }
-  #crosshair::after { width: 8px; height: 1px; top: 9px; left: 5px; }
+  .unit .unit-status.in-dev { color: #c8a84a; }
+
+  /* Chat / aloqa */
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .contact-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: rgba(20, 40, 60, 0.6);
+    border: 1px solid #2a4a6a;
+    border-radius: 6px;
+    color: #8ab8d8;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+  }
+  .contact-links a:hover {
+    background: #1a3a5a;
+    border-color: #6ec8ff;
+    color: #fff;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(60, 120, 180, 0.15);
+    font-size: 12px;
+    color: #4a5a6a;
+    letter-spacing: 1px;
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 28px; letter-spacing: 3px; }
+    .container { padding: 24px 16px 60px; }
+    .card { padding: 20px; }
+    .tech-list .tech-desc { text-align: left; }
+  }
 </style>
 </head>
 <body>
 
-<div id="ui">
-  <h1 id="title">WarHear Protection</h1>
-  <div class="sub" id="subtitle">3D Missile Ballistic Drone</div>
-  <div id="lang-switch">
+<div class="container">
+
+  <!-- Til almashtirish -->
+  <div class="lang-switch">
     <button data-lang="ru" class="active">Рус</button>
     <button data-lang="en">Eng</button>
     <button data-lang="uk">Укр</button>
   </div>
-  <button class="btn" id="btn-missile">🚀 G-31</button>
-  <button class="btn" id="btn-drone">✈️ GERAN-2</button>
-  <div id="status"></div>
-  <div class="obj-count" id="obj-count"></div>
+
+  <!-- Sarlavha -->
+  <header>
+    <h1 data-i18n="title">WarHear Protection</h1>
+    <div class="tagline" data-i18n="tagline">3D Ballistic Missile · Drone</div>
+    <div class="badge" data-i18n="badge">In Development</div>
+  </header>
+
+  <!-- O'yin haqida -->
+  <section class="card">
+    <h2 data-i18n="aboutTitle">Об игре</h2>
+    <p data-i18n="aboutText">
+      WarHear Protection — это 3D-игра о баллистических ракетах и беспилотниках,
+      созданная на движке Godot с рендерингом Forward+. В игре реализованы
+      запуски баллистических ракет и дронов GERAN-2. На данный момент ракеты
+      и дроны только набирают высоту — механика поражения цели ещё в разработке.
+    </p>
+  </section>
+
+  <!-- Информация -->
+  <section class="card">
+    <h2 data-i18n="infoTitle">Информация</h2>
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="label" data-i18n="infoDevLabel">Разработчик</div>
+        <div class="value" data-i18n="infoDevValue">Indie Developer</div>
+      </div>
+      <div class="info-item">
+        <div class="label" data-i18n="infoEngineLabel">Движок</div>
+        <div class="value" data-i18n="infoEngineValue">Godot Engine (Forward+)</div>
+      </div>
+      <div class="info-item">
+        <div class="label" data-i18n="infoGenreLabel">Жанр</div>
+        <div class="value" data-i18n="infoGenreValue">3D / Ballistic / Simulation</div>
+      </div>
+      <div class="info-item">
+        <div class="label" data-i18n="infoStatusLabel">Статус</div>
+        <div class="value" data-i18n="infoStatusValue">In Development</div>
+      </div>
+      <div class="info-item">
+        <div class="label" data-i18n="infoLangLabel">Языки</div>
+        <div class="value" data-i18n="infoLangValue">RU / EN / UK</div>
+      </div>
+      <div class="info-item">
+        <div class="label" data-i18n="infoPlatformLabel">Платформа</div>
+        <div class="value" data-i18n="infoPlatformValue">PC (Desktop)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Технологии -->
+  <section class="card">
+    <h2 data-i18n="techTitle">Технологии</h2>
+    <ul class="tech-list">
+      <li>
+        <span class="tech-name" data-i18n="techRenderName">Рендеринг</span>
+        <span class="tech-desc" data-i18n="techRenderDesc">Godot Forward+ — ULTRA GRAPHICS</span>
+      </li>
+      <li>
+        <span class="tech-name" data-i18n="techPhysicsName">Физика</span>
+        <span class="tech-desc" data-i18n="techPhysicsDesc">Баллистическая траектория полёта</span>
+      </li>
+      <li>
+        <span class="tech-name" data-i18n="techModelsName">3D-модели</span>
+        <span class="tech-desc" data-i18n="techModelsDesc">Собственные модели ракет и дронов</span>
+      </li>
+      <li>
+        <span class="tech-name" data-i18n="techLocalName">Локализация</span>
+        <span class="tech-desc" data-i18n="techLocalDesc">Русский / English / Українська</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Юниты -->
+  <section class="card">
+    <h2 data-i18n="unitsTitle">Юниты</h2>
+    <div class="units">
+      <div class="unit">
+        <div class="unit-icon">🚀</div>
+        <div class="unit-name">G-31</div>
+        <div class="unit-type" data-i18n="unitMissileType">Ballistic Missile</div>
+        <div class="unit-status" data-i18n="unitMissileStatus">Запуск и набор высоты</div>
+      </div>
+      <div class="unit">
+        <div class="unit-icon">✈️</div>
+        <div class="unit-name">GERAN-2</div>
+        <div class="unit-type" data-i18n="unitDroneType">Drone</div>
+        <div class="unit-status" data-i18n="unitDroneStatus">Запуск и набор высоты</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Связь -->
+  <section class="card">
+    <h2 data-i18n="contactTitle">Связь</h2>
+    <div class="contact-links">
+      <a href="https://github.com/" target="_blank" rel="noopener">
+        <span>💻</span> <span data-i18n="contactGithub">GitHub</span>
+      </a>
+      <a href="#" target="_blank" rel="noopener">
+        <span>💬</span> <span data-i18n="contactChat">Чат</span>
+      </a>
+      <a href="mailto:contact@example.com">
+        <span>✉️</span> <span data-i18n="contactEmail">Email</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <span data-i18n="footer">© 2026 WarHear Protection · Все права защищены</span>
+  </footer>
+
 </div>
 
-<div id="crosshair"></div>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-
-<script type="module">
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-// ============================================================
-// 1. KO'P TILLI MATNLAR
-// ============================================================
+<script>
 const I18N = {
   ru: {
     title: 'WarHear Protection',
-    subtitle: '3D Баллистическая Ракета · Дрон',
-    btnMissile: '🚀 Запустить G-31',
-    btnDrone: '✈️ Запустить GERAN-2',
-    statusReady: 'Готов к запуску',
-    statusMissile: 'G-31 запущена — набор высоты',
-    statusDrone: 'GERAN-2 запущен — набор высоты',
-    objCount: 'Объектов в сцене: {n}'
+    tagline: '3D Баллистическая Ракета · Дрон',
+    badge: 'В разработке',
+    aboutTitle: 'Об игре',
+    aboutText: 'WarHear Protection — это 3D-игра о баллистических ракетах и беспилотниках, созданная на движке Godot с рендерингом Forward+. В игре реализованы запуски баллистических ракет и дронов GERAN-2. На данный момент ракеты и дроны только набирают высоту — механика поражения цели ещё в разработке.',
+    infoTitle: 'Информация',
+    infoDevLabel: 'Разработчик',
+    infoDevValue: 'Indie Developer',
+    infoEngineLabel: 'Движок',
+    infoEngineValue: 'Godot Engine (Forward+)',
+    infoGenreLabel: 'Жанр',
+    infoGenreValue: '3D / Ballistic / Simulation',
+    infoStatusLabel: 'Статус',
+    infoStatusValue: 'В разработке',
+    infoLangLabel: 'Языки',
+    infoLangValue: 'RU / EN / UK',
+    infoPlatformLabel: 'Платформа',
+    infoPlatformValue: 'PC (Desktop)',
+    techTitle: 'Технологии',
+    techRenderName: 'Рендеринг',
+    techRenderDesc: 'Godot Forward+ — ULTRA GRAPHICS',
+    techPhysicsName: 'Физика',
+    techPhysicsDesc: 'Баллистическая траектория полёта',
+    techModelsName: '3D-модели',
+    techModelsDesc: 'Собственные модели ракет и дронов',
+    techLocalName: 'Локализация',
+    techLocalDesc: 'Русский / English / Українська',
+    unitsTitle: 'Юниты',
+    unitMissileType: 'Ballistic Missile',
+    unitMissileStatus: 'Запуск и набор высоты',
+    unitDroneType: 'Drone',
+    unitDroneStatus: 'Запуск и набор высоты',
+    contactTitle: 'Связь',
+    contactGithub: 'GitHub',
+    contactChat: 'Чат',
+    contactEmail: 'Email',
+    footer: '© 2026 WarHear Protection · Все права защищены'
   },
+
   en: {
     title: 'WarHear Protection',
-    subtitle: '3D Ballistic Missile · Drone',
-    btnMissile: '🚀 Launch G-31',
-    btnDrone: '✈️ Launch GERAN-2',
-    statusReady: 'Ready to launch',
-    statusMissile: 'G-31 launched — ascending',
-    statusDrone: 'GERAN-2 launched — ascending',
-    objCount: 'Scene objects: {n}'
+    tagline: '3D Ballistic Missile · Drone',
+    badge: 'In Development',
+    aboutTitle: 'About the Game',
+    aboutText: 'WarHear Protection is a 3D game about ballistic missiles and drones, built with the Godot engine and Forward+ rendering. The game features launches of ballistic missiles and GERAN-2 drones. Currently, missiles and drones only ascend — the target impact mechanic is still in development.',
+    infoTitle: 'Information',
+    infoDevLabel: 'Developer',
+    infoDevValue: 'Indie Developer',
+    infoEngineLabel: 'Engine',
+    infoEngineValue: 'Godot Engine (Forward+)',
+    infoGenreLabel: 'Genre',
+    infoGenreValue: '3D / Ballistic / Simulation',
+    infoStatusLabel: 'Status',
+    infoStatusValue: 'In Development',
+    infoLangLabel: 'Languages',
+    infoLangValue: 'RU / EN / UK',
+    infoPlatformLabel: 'Platform',
+    infoPlatformValue: 'PC (Desktop)',
+    techTitle: 'Technology',
+    techRenderName: 'Rendering',
+    techRenderDesc: 'Godot Forward+ — ULTRA GRAPHICS',
+    techPhysicsName: 'Physics',
+    techPhysicsDesc: 'Ballistic flight trajectory',
+    techModelsName: '3D Models',
+    techModelsDesc: 'Custom missile and drone models',
+    techLocalName: 'Localization',
+    techLocalDesc: 'Russian / English / Ukrainian',
+    unitsTitle: 'Units',
+    unitMissileType: 'Ballistic Missile',
+    unitMissileStatus: 'Launch and ascent',
+    unitDroneType: 'Drone',
+    unitDroneStatus: 'Launch and ascent',
+    contactTitle: 'Contact',
+    contactGithub: 'GitHub',
+    contactChat: 'Chat',
+    contactEmail: 'Email',
+    footer: '© 2026 WarHear Protection · All rights reserved'
   },
+
   uk: {
     title: 'WarHear Protection',
-    subtitle: '3D Балістична Ракета · Дрон',
-    btnMissile: '🚀 Запустити G-31',
-    btnDrone: '✈️ Запустити GERAN-2',
-    statusReady: 'Готовий до запуску',
-    statusMissile: 'G-31 запущено — набір висоти',
-    statusDrone: 'GERAN-2 запущено — набір висоти',
-    objCount: 'Об\'єктів у сцені: {n}'
+    tagline: '3D Балістична Ракета · Дрон',
+    badge: 'У розробці',
+    aboutTitle: 'Про гру',
+    aboutText: 'WarHear Protection — це 3D-гра про балістичні ракети та безпілотники, створена на рушії Godot з рендерингом Forward+. У грі реалізовано запуски балістичних ракет і дронів GERAN-2. Наразі ракети та дрони лише набирають висоту — механіка ураження цілі ще в розробці.',
+    infoTitle: 'Інформація',
+    infoDevLabel: 'Розробник',
+    infoDevValue: 'Indie Developer',
+    infoEngineLabel: 'Рушій',
+    infoEngineValue: 'Godot Engine (Forward+)',
+    infoGenreLabel: 'Жанр',
+    infoGenreValue: '3D / Ballistic / Simulation',
+    infoStatusLabel: 'Статус',
+    infoStatusValue: 'У розробці',
+    infoLangLabel: 'Мови',
+    infoLangValue: 'RU / EN / UK',
+    infoPlatformLabel: 'Платформа',
+    infoPlatformValue: 'PC (Desktop)',
+    techTitle: 'Технології',
+    techRenderName: 'Рендеринг',
+    techRenderDesc: 'Godot Forward+ — ULTRA GRAPHICS',
+    techPhysicsName: 'Фізика',
+    techPhysicsDesc: 'Балістична траєкторія польоту',
+    techModelsName: '3D-моделі',
+    techModelsDesc: 'Власні моделі ракет і дронів',
+    techLocalName: 'Локалізація',
+    techLocalDesc: 'Русский / English / Українська',
+    unitsTitle: 'Юніти',
+    unitMissileType: 'Ballistic Missile',
+    unitMissileStatus: 'Запуск і набір висоти',
+    unitDroneType: 'Drone',
+    unitDroneStatus: 'Запуск і набір висоти',
+    contactTitle: 'Зв\'язок',
+    contactGithub: 'GitHub',
+    contactChat: 'Чат',
+    contactEmail: 'Email',
+    footer: '© 2026 WarHear Protection · Усі права захищені'
   }
 };
 
 let currentLang = 'ru';
 
-function t(key, vars = {}) {
-  let s = I18N[currentLang][key] || key;
-  for (const [k, v] of Object.entries(vars)) {
-    s = s.replace(`{${k}}`, v);
-  }
-  return s;
-}
-
-// ============================================================
-// 2. THREE.JS ASOSIY SAHNA
-// ============================================================
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x05060a);
-scene.fog = new THREE.FogExp2(0x05060a, 0.0015);
-
-const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 5000);
-camera.position.set(60, 40, 80);
-
-const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
-document.body.appendChild(renderer.domElement);
-
-// OrbitControls (o'yin keyinchalik o'zgartirilishi mumkin, hozircha kamerani kuzatish uchun)
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.08;
-controls.target.set(0, 15, 0);
-controls.maxPolarAngle = Math.PI / 2.1;
-
-// ============================================================
-// 3. YORUG'LIK
-// ============================================================
-// Atrof-muhit yorug'ligi
-const ambient = new THREE.AmbientLight(0x1a2a4a, 1.5);
-scene.add(ambient);
-
-// Asosiy yo'naltirilgan yorug'lik (quyosh)
-const sunLight = new THREE.DirectionalLight(0x8ab4ff, 2.0);
-sunLight.position.set(100, 120, 60);
-sunLight.castShadow = true;
-sunLight.shadow.mapSize.set(2048, 2048);
-sunLight.shadow.camera.left = -200;
-sunLight.shadow.camera.right = 200;
-sunLight.shadow.camera.top = 200;
-sunLight.shadow.camera.bottom = -200;
-sunLight.shadow.camera.far = 400;
-scene.add(sunLight);
-
-// Yordamchi yorug'lik (issiq rang, "ultra" tuyg'usi uchun)
-const fillLight = new THREE.PointLight(0xff6a4a, 0.8, 500);
-fillLight.position.set(-60, 40, -40);
-scene.add(fillLight);
-
-// ============================================================
-// 4. YER
-// ============================================================
-const groundGeo = new THREE.CircleGeometry(600, 64);
-const groundMat = new THREE.MeshStandardMaterial({
-  color: 0x0a0e18,
-  roughness: 0.9,
-  metalness: 0.1,
-  emissive: 0x050a12
-});
-const ground = new THREE.Mesh(groundGeo, groundMat);
-ground.rotation.x = -Math.PI / 2;
-ground.receiveShadow = true;
-scene.add(ground);
-
-// Yer panjarasi (texnologik tuyg'u)
-const gridHelper = new THREE.GridHelper(600, 40, 0x1a3a5a, 0x0e1e2e);
-gridHelper.position.y = 0.5;
-scene.add(gridHelper);
-
-// ============================================================
-// 5. G-31 RAKETASI (soddalashtirilgan model)
-// ============================================================
-function createG31() {
-  const group = new THREE.Group();
-
-  // Asosiy tana (silindr)
-  const bodyGeo = new THREE.CylinderGeometry(1.2, 1.4, 8, 16);
-  const bodyMat = new THREE.MeshStandardMaterial({
-    color: 0x4a5a6a, roughness: 0.4, metalness: 0.7,
-    emissive: 0x0a1a2a
-  });
-  const body = new THREE.Mesh(bodyGeo, bodyMat);
-  body.castShadow = true;
-  body.receiveShadow = true;
-  body.position.y = 4;
-  group.add(body);
-
-  // Burun konusi
-  const noseGeo = new THREE.ConeGeometry(1.2, 3, 16);
-  const noseMat = new THREE.MeshStandardMaterial({
-    color: 0x6a7a8a, roughness: 0.3, metalness: 0.8
-  });
-  const nose = new THREE.Mesh(noseGeo, noseMat);
-  nose.castShadow = true;
-  nose.position.y = 9.5;
-  group.add(nose);
-
-  // Qanotlar (4 ta)
-  const finMat = new THREE.MeshStandardMaterial({
-    color: 0x3a4a5a, roughness: 0.5, metalness: 0.6, side: THREE.DoubleSide
-  });
-  for (let i = 0; i < 4; i++) {
-    const finGeo = new THREE.BoxGeometry(0.3, 2.5, 2.5);
-    const fin = new THREE.Mesh(finGeo, finMat);
-    fin.castShadow = true;
-    fin.position.y = 5;
-    fin.rotation.y = (i * Math.PI) / 2;
-    fin.position.x = Math.cos((i * Math.PI) / 2) * 1.2;
-    fin.position.z = Math.sin((i * Math.PI) / 2) * 1.2;
-    group.add(fin);
-  }
-
-  // Dvigatel olovi
-  const flameGeo = new THREE.ConeGeometry(0.8, 2.5, 8);
-  const flameMat = new THREE.MeshBasicMaterial({
-    color: 0xff6a2a, transparent: true, opacity: 0.9
-  });
-  const flame = new THREE.Mesh(flameGeo, flameMat);
-  flame.position.y = -1.2;
-  flame.rotation.x = Math.PI;
-  group.add(flame);
-
-  // Dvigatel olovi nuqtasi yorug'ligi
-  const flameLight = new THREE.PointLight(0xff4a1a, 2, 30);
-  flameLight.position.y = -1;
-  group.add(flameLight);
-
-  return group;
-}
-
-// ============================================================
-// 6. GERAN-2 DRONI (soddalashtirilgan model)
-// ============================================================
-function createGeran2() {
-  const group = new THREE.Group();
-
-  // Fyuzelyaj (cho'zinchoq)
-  const fuselageGeo = new THREE.BoxGeometry(1.2, 0.8, 5);
-  const fuselageMat = new THREE.MeshStandardMaterial({
-    color: 0x5a4a3a, roughness: 0.7, metalness: 0.3
-  });
-  const fuselage = new THREE.Mesh(fuselageGeo, fuselageMat);
-  fuselage.castShadow = true;
-  fuselage.receiveShadow = true;
-  group.add(fuselage);
-
-  // Asosiy qanot (katta delta qanot)
-  const wingGeo = new THREE.BoxGeometry(8, 0.15, 1.5);
-  const wingMat = new THREE.MeshStandardMaterial({
-    color: 0x6a5a4a, roughness: 0.6, metalness: 0.3, side: THREE.DoubleSide
-  });
-  const wing = new THREE.Mesh(wingGeo, wingMat);
-  wing.castShadow = true;
-  wing.position.z = 0.3;
-  group.add(wing);
-
-  // Oldingi kichik qanot
-  const canardGeo = new THREE.BoxGeometry(3, 0.1, 0.8);
-  const canard = new THREE.Mesh(canardGeo, wingMat);
-  canard.castShadow = true;
-  canard.position.z = 2;
-  group.add(canard);
-
-  // Dvigatel (orqa qism)
-  const engineGeo = new THREE.CylinderGeometry(0.5, 0.6, 1.2, 8);
-  const engineMat = new THREE.MeshStandardMaterial({
-    color: 0x3a3a3a, roughness: 0.5, metalness: 0.8
-  });
-  const engine = new THREE.Mesh(engineGeo, engineMat);
-  engine.rotation.x = Math.PI / 2;
-  engine.position.z = -3;
-  engine.castShadow = true;
-  group.add(engine);
-
-  // Parvona (oddiy disk)
-  const propGeo = new THREE.BoxGeometry(3, 0.1, 0.3);
-  const propMat = new THREE.MeshStandardMaterial({
-    color: 0x2a2a2a, roughness: 0.4, metalness: 0.9
-  });
-  const prop = new THREE.Mesh(propGeo, propMat);
-  prop.position.z = -3.7;
-  group.add(prop);
-
-  return group;
-}
-
-// ============================================================
-// 7. UCHISH BOSHQARUVI
-// ============================================================
-const activeMissiles = [];
-
-function launchG31() {
-  const missile = createG31();
-  // Tasodifiy joydan uchirish
-  const angle = Math.random() * Math.PI * 2;
-  const radius = 40 + Math.random() * 60;
-  missile.position.set(
-    Math.cos(angle) * radius,
-    0.5,
-    Math.sin(angle) * radius
-  );
-  // Tasodifiy yo'nalish (osmonga qarab)
-  missile.rotation.y = Math.random() * Math.PI * 2;
-  scene.add(missile);
-
-  activeMissiles.push({
-    mesh: missile,
-    type: 'missile',
-    speed: 8 + Math.random() * 6,
-    maxAltitude: 300 + Math.random() * 200,
-    startY: missile.position.y
-  });
-
-  updateStatus('statusMissile');
-  updateObjCount();
-}
-
-function launchGeran2() {
-  const drone = createGeran2();
-  const angle = Math.random() * Math.PI * 2;
-  const radius = 60 + Math.random() * 80;
-  drone.position.set(
-    Math.cos(angle) * radius,
-    1,
-    Math.sin(angle) * radius
-  );
-  drone.rotation.y = Math.random() * Math.PI * 2;
-  scene.add(drone);
-
-  activeMissiles.push({
-    mesh: drone,
-    type: 'drone',
-    speed: 4 + Math.random() * 3,
-    maxAltitude: 200 + Math.random() * 150,
-    startY: drone.position.y
-  });
-
-  updateStatus('statusDrone');
-  updateObjCount();
-}
-
-// ============================================================
-// 8. YANGILANISH VA ANIMATSIYA
-// ============================================================
-let statusTimer = null;
-let sceneObjCount = 0;
-
-function updateStatus(key) {
-  const el = document.getElementById('status');
-  el.textContent = t(key);
-  el.style.color = '#4a8a6a';
-  if (statusTimer) clearTimeout(statusTimer);
-  statusTimer = setTimeout(() => {
-    el.textContent = t('statusReady');
-    el.style.color = '#4a6a8a';
-  }, 3000);
-}
-
-function updateObjCount() {
-  sceneObjCount = activeMissiles.length;
-  document.getElementById('obj-count').textContent = t('objCount', { n: sceneObjCount });
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-
-  const delta = 0.016; // taxminiy
-
-  // Faol raketalar/dronlarni yangilash
-  for (let i = activeMissiles.length - 1; i >= 0; i--) {
-    const obj = activeMissiles[i];
-    const mesh = obj.mesh;
-
-    // Ko'tarilish
-    mesh.position.y += obj.speed * delta;
-
-    // Dvigatel olovini tebranish (raketa uchun)
-    if (obj.type === 'missile') {
-      const flame = mesh.children.find(c => c.material && c.material.color && c.material.color.getHex() === 0xff6a2a);
-      if (flame) {
-        flame.scale.y = 0.8 + Math.random() * 0.6;
-        flame.material.opacity = 0.6 + Math.random() * 0.4;
-      }
+function applyLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (I18N[lang][key]) {
+      el.textContent = I18N[lang][key];
     }
-
-    // Dronni sekin aylantirish
-    if (obj.type === 'drone') {
-      mesh.rotation.z = Math.sin(Date.now() * 0.001 + i) * 0.05;
-    }
-
-    // Maksimal balandlikdan oshganda olib tashlash (hozircha yerga tushish yo'q)
-    if (mesh.position.y > obj.maxAltitude) {
-      scene.remove(mesh);
-      // Resurslarni tozalash
-      mesh.traverse(child => {
-        if (child.geometry) child.geometry.dispose();
-        if (child.material) {
-          if (Array.isArray(child.material)) child.material.forEach(m => m.dispose());
-          else child.material.dispose();
-        }
-      });
-      activeMissiles.splice(i, 1);
-      updateObjCount();
-    }
-  }
-
-  controls.update();
-  renderer.render(scene, camera);
+  });
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-switch button').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
 }
 
-// ============================================================
-// 9. UI BOG'LANISH
-// ============================================================
-document.getElementById('btn-missile').addEventListener('click', launchG31);
-document.getElementById('btn-drone').addEventListener('click', launchGeran2);
-
-// Tilni almashtirish
-document.querySelectorAll('#lang-switch button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('#lang-switch button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentLang = btn.dataset.lang;
-    refreshUI();
-  });
+document.querySelectorAll('.lang-switch button').forEach(btn => {
+  btn.addEventListener('click', () => applyLang(btn.dataset.lang));
 });
 
-function refreshUI() {
-  document.getElementById('title').textContent = t('title');
-  document.getElementById('subtitle').textContent = t('subtitle');
-  document.getElementById('btn-missile').textContent = t('btnMissile');
-  document.getElementById('btn-drone').textContent = t('btnDrone');
-  updateObjCount();
-  const statusEl = document.getElementById('status');
-  if (!statusTimer || statusEl.textContent === '') {
-    statusEl.textContent = t('statusReady');
-  }
-}
-
-// ============================================================
-// 10. OYNA O'LCHAMI
-// ============================================================
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-// ============================================================
-// ISHGA TUSHIRISH
-// ============================================================
-refreshUI();
-animate();
+applyLang('ru');
 </script>
+
 </body>
 </html>
