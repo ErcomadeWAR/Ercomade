@@ -1,1 +1,461 @@
-daa
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERCOMADE AIRO WAR</title>
+<style>
+  /* Dizayn: Oddiy, toza va inson qo'li bilan yasalgan */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121417;
+    color: #d1d5db;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  /* Yuqori qism */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #2d333b;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .logo h1 {
+    color: #ffffff;
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+  
+  .logo p {
+    color: #8b949e;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+
+  /* Tillar */
+  .lang-switch {
+    display: flex;
+    gap: 5px;
+    background: #1c2128;
+    padding: 5px;
+    border-radius: 6px;
+    border: 1px solid #2d333b;
+  }
+
+  .lang-switch button {
+    background: transparent;
+    border: none;
+    color: #8b949e;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+
+  .lang-switch button:hover {
+    color: #ffffff;
+  }
+
+  .lang-switch button.active {
+    background: #3b82f6;
+    color: #ffffff;
+  }
+
+  /* Bo'limlar */
+  .section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #8b949e;
+    margin-bottom: 15px;
+  }
+
+  section {
+    margin-bottom: 35px;
+  }
+
+  /* O'yin haqida */
+  .about-text {
+    background: #1c2128;
+    border: 1px solid #2d333b;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  /* Ma'lumotlar jadvali */
+  .info-table {
+    background: #1c2128;
+    border: 1px solid #2d333b;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-bottom: 1px solid #2d333b;
+    font-size: 14px;
+  }
+
+  .info-row:last-child {
+    border-bottom: none;
+  }
+
+  .info-row .key { color: #8b949e; }
+  .info-row .val { color: #ffffff; font-weight: 500; text-align: right; }
+
+  /* Kartochkalar */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    background: #1c2128;
+    border: 1px solid #2d333b;
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .card .name {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+
+  .card .desc {
+    color: #8b949e;
+    font-size: 13px;
+  }
+
+  /* Kontakt */
+  .contact-box {
+    background: #1c2128;
+    border: 1px solid #2d333b;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .tiktok-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #000000;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #333;
+    transition: 0.2s;
+  }
+
+  .tiktok-btn:hover {
+    background: #111;
+    border-color: #555;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding-top: 30px;
+    margin-top: 50px;
+    border-top: 1px solid #2d333b;
+    color: #8b949e;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <h1>ERCOMADE AIRO WAR</h1>
+      <p data-i18n="subtitle">2D Война · Дроны · Ракеты</p>
+      <p style="font-size: 12px; color: #3b82f6; margin-top: 8px;">Godot Engine 4.7.2</p>
+    </div>
+    
+    <div class="lang-switch">
+      <button data-lang="ru" class="active">Рус</button>
+      <button data-lang="en">Eng</button>
+      <button data-lang="uk">Укр</button>
+    </div>
+  </header>
+
+  <!-- Об игре -->
+  <section>
+    <div class="section-title" data-i18n="title_about">Об игре</div>
+    <div class="about-text" data-i18n="text_about">
+      ERCOMADE AIRO WAR — это 2D-игра о войне между Украиной и Россией, с дронами и ракетами. Создана на Godot Engine 4.7.2. В игре есть режимы ИИ, Украинский и Песочница, а также множество юнитов.
+    </div>
+  </section>
+
+  <!-- Информация -->
+  <section>
+    <div class="section-title" data-i18n="title_info">Информация</div>
+    <div class="info-table">
+      <div class="info-row">
+        <span class="key" data-i18n="info_dev">Разработчик</span>
+        <span class="val">Саша</span>
+      </div>
+      <div class="info-row">
+        <span class="key" data-i18n="info_eng">Движок</span>
+        <span class="val">Godot Engine 4.7.2</span>
+      </div>
+      <div class="info-row">
+        <span class="key" data-i18n="info_gen">Жанр</span>
+        <span class="val" data-i18n="info_gen_val">2D Война / Стратегия</span>
+      </div>
+      <div class="info-row">
+        <span class="key" data-i18n="info_stat">Статус</span>
+        <span class="val" data-i18n="info_stat_val">В разработке</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Юниты -->
+  <section>
+    <div class="section-title" data-i18n="title_units">Юниты</div>
+    <div class="grid">
+      <div class="card"><div class="name">TU-95MS</div><div class="desc" data-i18n="u_tu95">Стратегический бомбардировщик</div></div>
+      <div class="card"><div class="name">X-101</div><div class="desc" data-i18n="u_x101">Крылатая ракета</div></div>
+      <div class="card"><div class="name">GEREN-2</div><div class="desc" data-i18n="u_geren">Реактивный дрон</div></div>
+      <div class="card"><div class="name">Искандер-М</div><div class="desc" data-i18n="u_iskander">Баллистическая ракета</div></div>
+      <div class="card"><div class="name">МиГ-31К</div><div class="desc" data-i18n="u_mig31">Носитель ракет</div></div>
+      <div class="card"><div class="name">МиГ-35К</div><div class="desc" data-i18n="u_mig35">Многоцелевой истребитель</div></div>
+      <div class="card"><div class="name">Фламинго</div><div class="desc" data-i18n="u_flamingo">Украинская ракета</div></div>
+      <div class="card"><div class="name">HIMARS</div><div class="desc" data-i18n="u_himars">РСЗО</div></div>
+      <div class="card"><div class="name">ПВО</div><div class="desc" data-i18n="u_pvo">Противовоздушная оборона</div></div>
+    </div>
+  </section>
+
+  <!-- Режимы -->
+  <section>
+    <div class="section-title" data-i18n="title_modes">Режимы</div>
+    <div class="grid">
+      <div class="card">
+        <div class="name" data-i18n="m_ai">ИИ Режим</div>
+        <div class="desc" data-i18n="m_ai_d">Игра против искусственного интеллекта</div>
+      </div>
+      <div class="card">
+        <div class="name" data-i18n="m_ua">Украинский Режим</div>
+        <div class="desc" data-i18n="m_ua_d">Игра за украинские силы</div>
+      </div>
+      <div class="card">
+        <div class="name" data-i18n="m_sandbox">Песочница Режим</div>
+        <div class="desc" data-i18n="m_sandbox_d">Свободный режим без ограничений</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Добавлено -->
+  <section>
+    <div class="section-title" data-i18n="title_added">Добавлено</div>
+    <div class="grid">
+      <div class="card"><div class="name">МиГ-35К</div><div class="desc" data-i18n="add_mig35">Новый юнит</div></div>
+      <div class="card"><div class="name">X-101</div><div class="desc" data-i18n="add_x101">Новая ракета</div></div>
+      <div class="card"><div class="name">Lobby</div><div class="desc" data-i18n="add_lobby">Новое лобби</div></div>
+      <div class="card"><div class="name">UI</div><div class="desc" data-i18n="add_ui">Дизайн интерфейса</div></div>
+    </div>
+  </section>
+
+  <!-- Контакты -->
+  <section>
+    <div class="section-title" data-i18n="title_contact">Контакты</div>
+    <div class="contact-box">
+      <span style="font-size: 14px; color: #8b949e;" data-i18n="contact_text">Наш TikTok:</span>
+      <a class="tiktok-btn" href="https://www.tiktok.com/@ercomade.airo.war" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+        @ercomade.airo.war
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    САША РАЗРАБОТЧИК
+  </footer>
+
+</div>
+
+<!-- JavaScript (Tillar to'g'ri ishlashi uchun) -->
+<script>
+  const translations = {
+    ru: {
+      subtitle: "2D Война · Дроны · Ракеты",
+      title_about: "Об игре",
+      text_about: "ERCOMADE AIRO WAR — это 2D-игра о войне между Украиной и Россией, с дронами и ракетами. Создана на Godot Engine 4.7.2. В игре есть режимы ИИ, Украинский и Песочница, а также множество юнитов.",
+      title_info: "Информация",
+      info_dev: "Разработчик",
+      info_eng: "Движок",
+      info_gen: "Жанр",
+      info_gen_val: "2D Война / Стратегия",
+      info_stat: "Статус",
+      info_stat_val: "В разработке",
+      title_units: "Юниты",
+      u_tu95: "Стратегический бомбардировщик",
+      u_x101: "Крылатая ракета",
+      u_geren: "Реактивный дрон",
+      u_iskander: "Баллистическая ракета",
+      u_mig31: "Носитель ракет",
+      u_mig35: "Многоцелевой истребитель",
+      u_flamingo: "Украинская ракета",
+      u_himars: "РСЗО",
+      u_pvo: "Противовоздушная оборона",
+      title_modes: "Режимы",
+      m_ai: "ИИ Режим",
+      m_ai_d: "Игра против искусственного интеллекта",
+      m_ua: "Украинский Режим",
+      m_ua_d: "Игра за украинские силы",
+      m_sandbox: "Песочница Режим",
+      m_sandbox_d: "Свободный режим без ограничений",
+      title_added: "Добавлено",
+      add_mig35: "Новый юнит",
+      add_x101: "Новая ракета",
+      add_lobby: "Новое лобби",
+      add_ui: "Дизайн интерфейса",
+      title_contact: "Контакты",
+      contact_text: "Наш TikTok:"
+    },
+    en: {
+      subtitle: "2D War · Drones · Missiles",
+      title_about: "About the Game",
+      text_about: "ERCOMADE AIRO WAR is a 2D war game about the conflict between Ukraine and Russia, featuring drones and missiles. Built with Godot Engine 4.7.2. The game features AI, Ukrainian, and Sandbox modes, along with many units.",
+      title_info: "Information",
+      info_dev: "Developer",
+      info_eng: "Engine",
+      info_gen: "Genre",
+      info_gen_val: "2D War / Strategy",
+      info_stat: "Status",
+      info_stat_val: "In Development",
+      title_units: "Units",
+      u_tu95: "Strategic bomber",
+      u_x101: "Cruise missile",
+      u_geren: "Jet drone",
+      u_iskander: "Ballistic missile",
+      u_mig31: "Missile carrier",
+      u_mig35: "Multirole fighter",
+      u_flamingo: "Ukrainian missile",
+      u_himars: "MLRS",
+      u_pvo: "Air defense",
+      title_modes: "Modes",
+      m_ai: "AI Mode",
+      m_ai_d: "Play against artificial intelligence",
+      m_ua: "Ukrainian Mode",
+      m_ua_d: "Play as Ukrainian forces",
+      m_sandbox: "Sandbox Mode",
+      m_sandbox_d: "Free mode without restrictions",
+      title_added: "Added",
+      add_mig35: "New unit",
+      add_x101: "New missile",
+      add_lobby: "New lobby",
+      add_ui: "UI design",
+      title_contact: "Contacts",
+      contact_text: "Our TikTok:"
+    },
+    uk: {
+      subtitle: "2D Війна · Дрони · Ракети",
+      title_about: "Про гру",
+      text_about: "ERCOMADE AIRO WAR — це 2D-гра про війну між Україною та Росією, з дронами та ракетами. Створена на Godot Engine 4.7.2. У грі є режими ШІ, Український та Пісочниця, а також багато юнітів.",
+      title_info: "Інформація",
+      info_dev: "Розробник",
+      info_eng: "Рушій",
+      info_gen: "Жанр",
+      info_gen_val: "2D Війна / Стратегія",
+      info_stat: "Статус",
+      info_stat_val: "У розробці",
+      title_units: "Юніти",
+      u_tu95: "Стратегічний бомбардувальник",
+      u_x101: "Крилата ракета",
+      u_geren: "Реактивний дрон",
+      u_iskander: "Балістична ракета",
+      u_mig31: "Носій ракет",
+      u_mig35: "Багатоцільовий винищувач",
+      u_flamingo: "Українська ракета",
+      u_himars: "РСЗВ",
+      u_pvo: "Протиповітряна оборона",
+      title_modes: "Режими",
+      m_ai: "Режим ШІ",
+      m_ai_d: "Гра проти штучного інтелекту",
+      m_ua: "Український Режим",
+      m_ua_d: "Гра за українські сили",
+      m_sandbox: "Режим Пісочниця",
+      m_sandbox_d: "Вільний режим без обмежень",
+      title_added: "Додано",
+      add_mig35: "Новий юніт",
+      add_x101: "Нова ракета",
+      add_lobby: "Нове лобі",
+      add_ui: "Дизайн інтерфейсу",
+      title_contact: "Контакти",
+      contact_text: "Наш TikTok:"
+    }
+  };
+
+  function setLanguage(lang) {
+    // Barcha tarjima qilinadigan elementlarni topish
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (translations[lang] && translations[lang][key]) {
+        el.textContent = translations[lang][key];
+      }
+    });
+
+    // Tillar tugmachalarining aktiv holatini o'zgartirish
+    document.querySelectorAll('.lang-switch button').forEach(btn => {
+      if (btn.getAttribute('data-lang') === lang) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+    
+    // HTML tegining lang atributini o'zgartirish
+    document.documentElement.lang = lang;
+  }
+
+  // Tugmalarga bosilganda tilni o'zgartirish
+  document.querySelectorAll('.lang-switch button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setLanguage(btn.getAttribute('data-lang'));
+    });
+  });
+
+  // Boshlang'ich til (Rus tili)
+  setLanguage('ru');
+</script>
+
+</body>
+</html>
