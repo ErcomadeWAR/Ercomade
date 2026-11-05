@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WarHear Protection — Official</title>
+<title>ERCOMADE AIRO WAR — Official</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -13,28 +13,25 @@
     line-height: 1.6;
     min-height: 100vh;
   }
-
-  /* Fon effekti */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(ellipse at 20% 10%, rgba(30, 90, 160, 0.25), transparent 50%),
-      radial-gradient(ellipse at 80% 90%, rgba(160, 60, 40, 0.15), transparent 50%);
+      radial-gradient(ellipse at 15% 5%, rgba(30, 90, 160, 0.28), transparent 50%),
+      radial-gradient(ellipse at 85% 95%, rgba(160, 60, 40, 0.18), transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(80, 40, 120, 0.08), transparent 60%);
     pointer-events: none;
     z-index: 0;
   }
-
   .container {
     position: relative;
     z-index: 1;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 40px 24px 80px;
   }
 
-  /* Til almashtirish */
   .lang-switch {
     display: flex;
     gap: 8px;
@@ -58,28 +55,33 @@
     color: #fff;
   }
 
-  /* Sarlavha */
   header {
     text-align: center;
     margin-bottom: 56px;
   }
   header h1 {
-    font-size: 42px;
-    letter-spacing: 6px;
+    font-size: 46px;
+    letter-spacing: 8px;
     text-transform: uppercase;
     color: #6ec8ff;
-    text-shadow: 0 0 30px rgba(110, 200, 255, 0.4);
-    margin-bottom: 12px;
+    text-shadow: 0 0 30px rgba(110, 200, 255, 0.45);
+    margin-bottom: 14px;
   }
   header .tagline {
     font-size: 15px;
     color: #7a8a9a;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     text-transform: uppercase;
+  }
+  header .badges {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
   }
   header .badge {
     display: inline-block;
-    margin-top: 18px;
     padding: 6px 18px;
     font-size: 12px;
     letter-spacing: 2px;
@@ -88,8 +90,12 @@
     color: #8ab8d8;
     background: rgba(30, 90, 138, 0.15);
   }
+  header .badge.hot {
+    border-color: #b84a3a;
+    color: #e8907a;
+    background: rgba(160, 60, 40, 0.15);
+  }
 
-  /* Kartochkalar */
   .card {
     background: rgba(12, 18, 28, 0.8);
     border: 1px solid rgba(60, 120, 180, 0.25);
@@ -108,7 +114,6 @@
     border-bottom: 1px solid rgba(60, 120, 180, 0.2);
   }
 
-  /* Ma'lumotlar jadvali */
   .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -132,28 +137,6 @@
     color: #c8d8e8;
   }
 
-  /* Texnologiya ro'yxati */
-  .tech-list { list-style: none; }
-  .tech-list li {
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(60, 120, 180, 0.1);
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .tech-list li:last-child { border-bottom: none; }
-  .tech-list .tech-name {
-    color: #8ab8d8;
-    font-weight: 600;
-  }
-  .tech-list .tech-desc {
-    color: #7a8a9a;
-    font-size: 13px;
-    text-align: right;
-  }
-
-  /* Birliklar */
   .units {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -168,14 +151,16 @@
   }
   .unit:hover {
     border-color: #4a8aba;
-    background: rgba(24, 38, 56, 0.8);
+    background: rgba(24, 38, 56, 0.85);
+    transform: translateY(-2px);
   }
-  .unit .unit-icon { font-size: 28px; margin-bottom: 8px; }
+  .unit .unit-icon { font-size: 30px; margin-bottom: 8px; }
   .unit .unit-name {
     font-size: 16px;
-    color: #c8d8e8;
+    color: #e0e8f0;
     letter-spacing: 1px;
     margin-bottom: 6px;
+    font-weight: 600;
   }
   .unit .unit-type {
     font-size: 11px;
@@ -184,13 +169,82 @@
     text-transform: uppercase;
     margin-bottom: 10px;
   }
-  .unit .unit-status {
+  .unit .unit-desc {
     font-size: 13px;
-    color: #8ab8d8;
+    color: #8a9aaa;
   }
-  .unit .unit-status.in-dev { color: #c8a84a; }
 
-  /* Chat / aloqa */
+  .modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .mode {
+    background: rgba(20, 30, 45, 0.6);
+    border: 1px solid rgba(60, 120, 180, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    transition: 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .mode::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, #3a7aaa, #6ec8ff);
+  }
+  .mode:hover {
+    border-color: #4a8aba;
+    background: rgba(24, 38, 56, 0.85);
+  }
+  .mode .mode-name {
+    font-size: 15px;
+    color: #e0e8f0;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .mode .mode-desc {
+    font-size: 13px;
+    color: #8a9aaa;
+  }
+
+  .maps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .map {
+    background: rgba(20, 30, 45, 0.6);
+    border: 1px solid rgba(60, 120, 180, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    transition: 0.2s;
+  }
+  .map:hover {
+    border-color: #4a8aba;
+    background: rgba(24, 38, 56, 0.85);
+  }
+  .map .map-num {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #5a8aaa;
+    margin-bottom: 6px;
+  }
+  .map .map-name {
+    font-size: 15px;
+    color: #e0e8f0;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .map .map-desc {
+    font-size: 13px;
+    color: #8a9aaa;
+  }
+
   .contact-links {
     display: flex;
     flex-wrap: wrap;
@@ -215,7 +269,6 @@
     color: #fff;
   }
 
-  /* Footer */
   footer {
     text-align: center;
     margin-top: 48px;
@@ -227,10 +280,9 @@
   }
 
   @media (max-width: 600px) {
-    header h1 { font-size: 28px; letter-spacing: 3px; }
+    header h1 { font-size: 26px; letter-spacing: 3px; }
     .container { padding: 24px 16px 60px; }
     .card { padding: 20px; }
-    .tech-list .tech-desc { text-align: left; }
   }
 </style>
 </head>
@@ -238,113 +290,171 @@
 
 <div class="container">
 
-  <!-- Til almashtirish -->
   <div class="lang-switch">
-    <button data-lang="ru" class="active">Рус</button>
-    <button data-lang="en">Eng</button>
+    <button data-lang="en" class="active">Eng</button>
     <button data-lang="uk">Укр</button>
+    <button data-lang="ru">Рус</button>
   </div>
 
-  <!-- Sarlavha -->
   <header>
-    <h1 data-i18n="title">WarHear Protection</h1>
-    <div class="tagline" data-i18n="tagline">3D Ballistic Missile · Drone</div>
-    <div class="badge" data-i18n="badge">In Development</div>
+    <h1 data-i18n="title">ERCOMADE AIRO WAR</h1>
+    <div class="tagline" data-i18n="tagline">2D War · Drones · Missiles</div>
+    <div class="badges">
+      <span class="badge" data-i18n="badgeEngine">Godot Engine 4.7.2</span>
+      <span class="badge hot" data-i18n="badgeStatus">In Development</span>
+    </div>
   </header>
 
-  <!-- O'yin haqida -->
   <section class="card">
-    <h2 data-i18n="aboutTitle">Об игре</h2>
+    <h2 data-i18n="aboutTitle">About the Game</h2>
     <p data-i18n="aboutText">
-      WarHear Protection — это 3D-игра о баллистических ракетах и беспилотниках,
-      созданная на движке Godot с рендерингом Forward+. В игре реализованы
-      запуски баллистических ракет и дронов GERAN-2. На данный момент ракеты
-      и дроны только набирают высоту — механика поражения цели ещё в разработке.
+      ERCOMADE AIRO WAR is a 2D war game about the conflict between Ukraine and Russia,
+      featuring drones and missiles. Built with Godot Engine 4.7.2. The game includes
+      multiple units — TU-95MS, X-101, GEREN-2 jet drone, Iskander-M, MiG-31K, Flamingo,
+      HIMARS and PVO — along with several game modes and four distinct maps with factories.
     </p>
   </section>
 
-  <!-- Информация -->
   <section class="card">
-    <h2 data-i18n="infoTitle">Информация</h2>
+    <h2 data-i18n="infoTitle">Information</h2>
     <div class="info-grid">
       <div class="info-item">
-        <div class="label" data-i18n="infoDevLabel">Разработчик</div>
-        <div class="value" data-i18n="infoDevValue">Indie Developer</div>
+        <div class="label" data-i18n="infoDevLabel">Developer</div>
+        <div class="value">Ercomade</div>
       </div>
       <div class="info-item">
-        <div class="label" data-i18n="infoEngineLabel">Движок</div>
-        <div class="value" data-i18n="infoEngineValue">Godot Engine (Forward+)</div>
+        <div class="label" data-i18n="infoEngineLabel">Engine</div>
+        <div class="value">Godot Engine 4.7.2</div>
       </div>
       <div class="info-item">
-        <div class="label" data-i18n="infoGenreLabel">Жанр</div>
-        <div class="value" data-i18n="infoGenreValue">3D / Ballistic / Simulation</div>
+        <div class="label" data-i18n="infoGenreLabel">Genre</div>
+        <div class="value" data-i18n="infoGenreValue">2D War / Strategy</div>
       </div>
       <div class="info-item">
-        <div class="label" data-i18n="infoStatusLabel">Статус</div>
+        <div class="label" data-i18n="infoThemeLabel">Theme</div>
+        <div class="value" data-i18n="infoThemeValue">Ukraine · Russia Conflict</div>
+      </div>
+      <div class="info-item">
+        <div class="label" data-i18n="infoStatusLabel">Status</div>
         <div class="value" data-i18n="infoStatusValue">In Development</div>
       </div>
       <div class="info-item">
-        <div class="label" data-i18n="infoLangLabel">Языки</div>
-        <div class="value" data-i18n="infoLangValue">RU / EN / UK</div>
-      </div>
-      <div class="info-item">
-        <div class="label" data-i18n="infoPlatformLabel">Платформа</div>
-        <div class="value" data-i18n="infoPlatformValue">PC (Desktop)</div>
+        <div class="label" data-i18n="infoLangLabel">Languages</div>
+        <div class="value">EN / UK / RU</div>
       </div>
     </div>
   </section>
 
-  <!-- Технологии -->
   <section class="card">
-    <h2 data-i18n="techTitle">Технологии</h2>
-    <ul class="tech-list">
-      <li>
-        <span class="tech-name" data-i18n="techRenderName">Рендеринг</span>
-        <span class="tech-desc" data-i18n="techRenderDesc">Godot Forward+ — ULTRA GRAPHICS</span>
-      </li>
-      <li>
-        <span class="tech-name" data-i18n="techPhysicsName">Физика</span>
-        <span class="tech-desc" data-i18n="techPhysicsDesc">Баллистическая траектория полёта</span>
-      </li>
-      <li>
-        <span class="tech-name" data-i18n="techModelsName">3D-модели</span>
-        <span class="tech-desc" data-i18n="techModelsDesc">Собственные модели ракет и дронов</span>
-      </li>
-      <li>
-        <span class="tech-name" data-i18n="techLocalName">Локализация</span>
-        <span class="tech-desc" data-i18n="techLocalDesc">Русский / English / Українська</span>
-      </li>
-    </ul>
-  </section>
-
-  <!-- Юниты -->
-  <section class="card">
-    <h2 data-i18n="unitsTitle">Юниты</h2>
+    <h2 data-i18n="unitsTitle">Units</h2>
     <div class="units">
       <div class="unit">
-        <div class="unit-icon">🚀</div>
-        <div class="unit-name">G-31</div>
-        <div class="unit-type" data-i18n="unitMissileType">Ballistic Missile</div>
-        <div class="unit-status" data-i18n="unitMissileStatus">Запуск и набор высоты</div>
+        <div class="unit-icon">✈️</div>
+        <div class="unit-name">TU-95MS</div>
+        <div class="unit-type" data-i18n="unitTypeBomber">Strategic Bomber</div>
+        <div class="unit-desc" data-i18n="unitDescTu95">Heavy bomber carrying cruise missiles</div>
       </div>
       <div class="unit">
-        <div class="unit-icon">✈️</div>
-        <div class="unit-name">GERAN-2</div>
-        <div class="unit-type" data-i18n="unitDroneType">Drone</div>
-        <div class="unit-status" data-i18n="unitDroneStatus">Запуск и набор высоты</div>
+        <div class="unit-icon">🚀</div>
+        <div class="unit-name">X-101</div>
+        <div class="unit-type" data-i18n="unitTypeCruise">Cruise Missile</div>
+        <div class="unit-desc" data-i18n="unitDescX101">Long-range air-launched cruise missile</div>
+      </div>
+      <div class="unit">
+        <div class="unit-icon">🛩️</div>
+        <div class="unit-name">GEREN-2</div>
+        <div class="unit-type" data-i18n="unitTypeJetDrone">Jet Drone</div>
+        <div class="unit-desc" data-i18n="unitDescGeren">Jet-powered strike drone</div>
+      </div>
+      <div class="unit">
+        <div class="unit-icon">💥</div>
+        <div class="unit-name">Iskander-M</div>
+        <div class="unit-type" data-i18n="unitTypeBallistic">Ballistic Missile</div>
+        <div class="unit-desc" data-i18n="unitDescIskander">Short-range ballistic missile system</div>
+      </div>
+      <div class="unit">
+        <div class="unit-icon">🛫</div>
+        <div class="unit-name">MiG-31K</div>
+        <div class="unit-type" data-i18n="unitTypeCarrier">Missile Carrier</div>
+        <div class="unit-desc" data-i18n="unitDescMig">Carrier aircraft for Kinzhal missiles</div>
+      </div>
+      <div class="unit">
+        <div class="unit-icon">🦩</div>
+        <div class="unit-name">Flamingo</div>
+        <div class="unit-type" data-i18n="unitTypeUkrMissile">Ukrainian Missile</div>
+        <div class="unit-desc" data-i18n="unitDescFlamingo">Ukrainian long-range strike weapon</div>
+      </div>
+      <div class="unit">
+        <div class="unit-icon">🎯</div>
+        <div class="unit-name">HIMARS</div>
+        <div class="unit-type" data-i18n="unitTypeMLRS">MLRS</div>
+        <div class="unit-desc" data-i18n="unitDescHimars">Multiple launch rocket system</div>
+      </div>
+      <div class="unit">
+        <div class="unit-icon">🛡️</div>
+        <div class="unit-name">PVO</div>
+        <div class="unit-type" data-i18n="unitTypeAirDef">Air Defense</div>
+        <div class="unit-desc" data-i18n="unitDescPvo">Air defense system</div>
       </div>
     </div>
   </section>
 
-  <!-- Связь -->
   <section class="card">
-    <h2 data-i18n="contactTitle">Связь</h2>
+    <h2 data-i18n="modesTitle">Game Modes</h2>
+    <div class="modes">
+      <div class="mode">
+        <div class="mode-name" data-i18n="modeSandboxName">Sandbox</div>
+        <div class="mode-desc" data-i18n="modeSandboxDesc">Free mode — experiment with all units and maps without restrictions</div>
+      </div>
+      <div class="mode">
+        <div class="mode-name" data-i18n="modeUkraineName">Ukraine Mode</div>
+        <div class="mode-desc" data-i18n="modeUkraineDesc">Play as Ukrainian forces — defend, counterattack and strike back</div>
+      </div>
+      <div class="mode">
+        <div class="mode-name" data-i18n="modeLaunchName">Launch Mode</div>
+        <div class="mode-desc" data-i18n="modeLaunchDesc">Banderol launch mode — coordinate missile and drone strikes</div>
+      </div>
+      <div class="mode">
+        <div class="mode-name" data-i18n="modeCustomName">Custom Mode</div>
+        <div class="mode-desc" data-i18n="modeCustomDesc">Build your own scenario with selectable units and objectives</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="mapsTitle">Maps</h2>
+    <div class="maps">
+      <div class="map">
+        <div class="map-num" data-i18n="mapNum1">MAP 01</div>
+        <div class="map-name" data-i18n="map1Name">Industrial Zone</div>
+        <div class="map-desc" data-i18n="map1Desc">Factories and industrial facilities — dense urban combat</div>
+      </div>
+      <div class="map">
+        <div class="map-num" data-i18n="mapNum2">MAP 02</div>
+        <div class="map-name" data-i18n="map2Name">Open Fields</div>
+        <div class="map-desc" data-i18n="map2Desc">Wide open terrain — long-range missile duels</div>
+      </div>
+      <div class="map">
+        <div class="map-num" data-i18n="mapNum3">MAP 03</div>
+        <div class="map-name" data-i18n="map3Name">Factory District</div>
+        <div class="map-desc" data-i18n="map3Desc">Heavy factories and warehouses — strategic targets</div>
+      </div>
+      <div class="map">
+        <div class="map-num" data-i18n="mapNum4">MAP 04</div>
+        <div class="map-name" data-i18n="map4Name">Coastal Line</div>
+        <div class="map-desc" data-i18n="map4Desc">Coastal positions with naval support and air defense</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 data-i18n="contactTitle">Contact</h2>
     <div class="contact-links">
       <a href="https://github.com/" target="_blank" rel="noopener">
         <span>💻</span> <span data-i18n="contactGithub">GitHub</span>
       </a>
       <a href="#" target="_blank" rel="noopener">
-        <span>💬</span> <span data-i18n="contactChat">Чат</span>
+        <span>💬</span> <span data-i18n="contactChat">Chat</span>
       </a>
       <a href="mailto:contact@example.com">
         <span>✉️</span> <span data-i18n="contactEmail">Email</span>
@@ -353,135 +463,204 @@
   </section>
 
   <footer>
-    <span data-i18n="footer">© 2026 WarHear Protection · Все права защищены</span>
+    <span data-i18n="footer">© 2026 ERCOMADE AIRO WAR · All rights reserved</span>
   </footer>
 
 </div>
 
 <script>
 const I18N = {
-  ru: {
-    title: 'WarHear Protection',
-    tagline: '3D Баллистическая Ракета · Дрон',
-    badge: 'В разработке',
-    aboutTitle: 'Об игре',
-    aboutText: 'WarHear Protection — это 3D-игра о баллистических ракетах и беспилотниках, созданная на движке Godot с рендерингом Forward+. В игре реализованы запуски баллистических ракет и дронов GERAN-2. На данный момент ракеты и дроны только набирают высоту — механика поражения цели ещё в разработке.',
-    infoTitle: 'Информация',
-    infoDevLabel: 'Разработчик',
-    infoDevValue: 'Indie Developer',
-    infoEngineLabel: 'Движок',
-    infoEngineValue: 'Godot Engine (Forward+)',
-    infoGenreLabel: 'Жанр',
-    infoGenreValue: '3D / Ballistic / Simulation',
-    infoStatusLabel: 'Статус',
-    infoStatusValue: 'В разработке',
-    infoLangLabel: 'Языки',
-    infoLangValue: 'RU / EN / UK',
-    infoPlatformLabel: 'Платформа',
-    infoPlatformValue: 'PC (Desktop)',
-    techTitle: 'Технологии',
-    techRenderName: 'Рендеринг',
-    techRenderDesc: 'Godot Forward+ — ULTRA GRAPHICS',
-    techPhysicsName: 'Физика',
-    techPhysicsDesc: 'Баллистическая траектория полёта',
-    techModelsName: '3D-модели',
-    techModelsDesc: 'Собственные модели ракет и дронов',
-    techLocalName: 'Локализация',
-    techLocalDesc: 'Русский / English / Українська',
-    unitsTitle: 'Юниты',
-    unitMissileType: 'Ballistic Missile',
-    unitMissileStatus: 'Запуск и набор высоты',
-    unitDroneType: 'Drone',
-    unitDroneStatus: 'Запуск и набор высоты',
-    contactTitle: 'Связь',
-    contactGithub: 'GitHub',
-    contactChat: 'Чат',
-    contactEmail: 'Email',
-    footer: '© 2026 WarHear Protection · Все права защищены'
-  },
-
   en: {
-    title: 'WarHear Protection',
-    tagline: '3D Ballistic Missile · Drone',
-    badge: 'In Development',
+    title: 'ERCOMADE AIRO WAR',
+    tagline: '2D War · Drones · Missiles',
+    badgeEngine: 'Godot Engine 4.7.2',
+    badgeStatus: 'In Development',
     aboutTitle: 'About the Game',
-    aboutText: 'WarHear Protection is a 3D game about ballistic missiles and drones, built with the Godot engine and Forward+ rendering. The game features launches of ballistic missiles and GERAN-2 drones. Currently, missiles and drones only ascend — the target impact mechanic is still in development.',
+    aboutText: 'ERCOMADE AIRO WAR is a 2D war game about the conflict between Ukraine and Russia, featuring drones and missiles. Built with Godot Engine 4.7.2. The game includes multiple units — TU-95MS, X-101, GEREN-2 jet drone, Iskander-M, MiG-31K, Flamingo, HIMARS and PVO — along with several game modes and four distinct maps with factories.',
     infoTitle: 'Information',
     infoDevLabel: 'Developer',
-    infoDevValue: 'Indie Developer',
     infoEngineLabel: 'Engine',
-    infoEngineValue: 'Godot Engine (Forward+)',
     infoGenreLabel: 'Genre',
-    infoGenreValue: '3D / Ballistic / Simulation',
+    infoGenreValue: '2D War / Strategy',
+    infoThemeLabel: 'Theme',
+    infoThemeValue: 'Ukraine · Russia Conflict',
     infoStatusLabel: 'Status',
     infoStatusValue: 'In Development',
     infoLangLabel: 'Languages',
-    infoLangValue: 'RU / EN / UK',
-    infoPlatformLabel: 'Platform',
-    infoPlatformValue: 'PC (Desktop)',
-    techTitle: 'Technology',
-    techRenderName: 'Rendering',
-    techRenderDesc: 'Godot Forward+ — ULTRA GRAPHICS',
-    techPhysicsName: 'Physics',
-    techPhysicsDesc: 'Ballistic flight trajectory',
-    techModelsName: '3D Models',
-    techModelsDesc: 'Custom missile and drone models',
-    techLocalName: 'Localization',
-    techLocalDesc: 'Russian / English / Ukrainian',
     unitsTitle: 'Units',
-    unitMissileType: 'Ballistic Missile',
-    unitMissileStatus: 'Launch and ascent',
-    unitDroneType: 'Drone',
-    unitDroneStatus: 'Launch and ascent',
+    unitTypeBomber: 'Strategic Bomber',
+    unitDescTu95: 'Heavy bomber carrying cruise missiles',
+    unitTypeCruise: 'Cruise Missile',
+    unitDescX101: 'Long-range air-launched cruise missile',
+    unitTypeJetDrone: 'Jet Drone',
+    unitDescGeren: 'Jet-powered strike drone',
+    unitTypeBallistic: 'Ballistic Missile',
+    unitDescIskander: 'Short-range ballistic missile system',
+    unitTypeCarrier: 'Missile Carrier',
+    unitDescMig: 'Carrier aircraft for Kinzhal missiles',
+    unitTypeUkrMissile: 'Ukrainian Missile',
+    unitDescFlamingo: 'Ukrainian long-range strike weapon',
+    unitTypeMLRS: 'MLRS',
+    unitDescHimars: 'Multiple launch rocket system',
+    unitTypeAirDef: 'Air Defense',
+    unitDescPvo: 'Air defense system',
+    modesTitle: 'Game Modes',
+    modeSandboxName: 'Sandbox',
+    modeSandboxDesc: 'Free mode — experiment with all units and maps without restrictions',
+    modeUkraineName: 'Ukraine Mode',
+    modeUkraineDesc: 'Play as Ukrainian forces — defend, counterattack and strike back',
+    modeLaunchName: 'Launch Mode',
+    modeLaunchDesc: 'Banderol launch mode — coordinate missile and drone strikes',
+    modeCustomName: 'Custom Mode',
+    modeCustomDesc: 'Build your own scenario with selectable units and objectives',
+    mapsTitle: 'Maps',
+    mapNum1: 'MAP 01',
+    map1Name: 'Industrial Zone',
+    map1Desc: 'Factories and industrial facilities — dense urban combat',
+    mapNum2: 'MAP 02',
+    map2Name: 'Open Fields',
+    map2Desc: 'Wide open terrain — long-range missile duels',
+    mapNum3: 'MAP 03',
+    map3Name: 'Factory District',
+    map3Desc: 'Heavy factories and warehouses — strategic targets',
+    mapNum4: 'MAP 04',
+    map4Name: 'Coastal Line',
+    map4Desc: 'Coastal positions with naval support and air defense',
     contactTitle: 'Contact',
     contactGithub: 'GitHub',
     contactChat: 'Chat',
     contactEmail: 'Email',
-    footer: '© 2026 WarHear Protection · All rights reserved'
+    footer: '© 2026 ERCOMADE AIRO WAR · All rights reserved'
   },
 
   uk: {
-    title: 'WarHear Protection',
-    tagline: '3D Балістична Ракета · Дрон',
-    badge: 'У розробці',
+    title: 'ERCOMADE AIRO WAR',
+    tagline: '2D Війна · Дрони · Ракети',
+    badgeEngine: 'Godot Engine 4.7.2',
+    badgeStatus: 'У розробці',
     aboutTitle: 'Про гру',
-    aboutText: 'WarHear Protection — це 3D-гра про балістичні ракети та безпілотники, створена на рушії Godot з рендерингом Forward+. У грі реалізовано запуски балістичних ракет і дронів GERAN-2. Наразі ракети та дрони лише набирають висоту — механіка ураження цілі ще в розробці.',
+    aboutText: 'ERCOMADE AIRO WAR — це 2D-гра про війну між Україною та Росією, з дронами та ракетами. Створена на Godot Engine 4.7.2. У грі є багато юнітів — TU-95MS, X-101, реактивний дрон GEREN-2, Іскандер-М, МіГ-31К, Фламінго, HIMARS та ППО — а також кілька режимів гри та чотири різні карти із заводами.',
     infoTitle: 'Інформація',
     infoDevLabel: 'Розробник',
-    infoDevValue: 'Indie Developer',
     infoEngineLabel: 'Рушій',
-    infoEngineValue: 'Godot Engine (Forward+)',
     infoGenreLabel: 'Жанр',
-    infoGenreValue: '3D / Ballistic / Simulation',
+    infoGenreValue: '2D Війна / Стратегія',
+    infoThemeLabel: 'Тема',
+    infoThemeValue: 'Конфлікт Україна · Росія',
     infoStatusLabel: 'Статус',
     infoStatusValue: 'У розробці',
     infoLangLabel: 'Мови',
-    infoLangValue: 'RU / EN / UK',
-    infoPlatformLabel: 'Платформа',
-    infoPlatformValue: 'PC (Desktop)',
-    techTitle: 'Технології',
-    techRenderName: 'Рендеринг',
-    techRenderDesc: 'Godot Forward+ — ULTRA GRAPHICS',
-    techPhysicsName: 'Фізика',
-    techPhysicsDesc: 'Балістична траєкторія польоту',
-    techModelsName: '3D-моделі',
-    techModelsDesc: 'Власні моделі ракет і дронів',
-    techLocalName: 'Локалізація',
-    techLocalDesc: 'Русский / English / Українська',
     unitsTitle: 'Юніти',
-    unitMissileType: 'Ballistic Missile',
-    unitMissileStatus: 'Запуск і набір висоти',
-    unitDroneType: 'Drone',
-    unitDroneStatus: 'Запуск і набір висоти',
+    unitTypeBomber: 'Стратегічний бомбардувальник',
+    unitDescTu95: 'Важкий бомбардувальник з крилатими ракетами',
+    unitTypeCruise: 'Крилата ракета',
+    unitDescX101: 'Крилата ракета великої дальності повітряного базування',
+    unitTypeJetDrone: 'Реактивний дрон',
+    unitDescGeren: 'Ударний дрон з реактивним двигуном',
+    unitTypeBallistic: 'Балістична ракета',
+    unitDescIskander: 'Балістичний ракетний комплекс малої дальності',
+    unitTypeCarrier: 'Носій ракет',
+    unitDescMig: 'Літак-носій ракет «Кинжал»',
+    unitTypeUkrMissile: 'Українська ракета',
+    unitDescFlamingo: 'Українська далекобійна ударна зброя',
+    unitTypeMLRS: 'РСЗВ',
+    unitDescHimars: 'Реактивна система залпового вогню',
+    unitTypeAirDef: 'Протиповітряна оборона',
+    unitDescPvo: 'Система ППО',
+    modesTitle: 'Режими гри',
+    modeSandboxName: 'Пісочниця',
+    modeSandboxDesc: 'Вільний режим — експериментуйте з усіма юнітами та картами без обмежень',
+    modeUkraineName: 'Режим України',
+    modeUkraineDesc: 'Грайте за українські сили — захищайте, контратакуйте та завдавайте ударів у відповідь',
+    modeLaunchName: 'Режим запуску',
+    modeLaunchDesc: 'Режим пуску «Бандероль» — координуйте ракетні та дронові удари',
+    modeCustomName: 'Власний режим',
+    modeCustomDesc: 'Створіть власний сценарій з вибраними юнітами та цілями',
+    mapsTitle: 'Карти',
+    mapNum1: 'КАРТА 01',
+    map1Name: 'Промислова зона',
+    map1Desc: 'Заводи та промислові об\'єкти — щільний міський бій',
+    mapNum2: 'КАРТА 02',
+    map2Name: 'Відкриті поля',
+    map2Desc: 'Широкі відкриті простори — далекобійні ракетні дуелі',
+    mapNum3: 'КАРТА 03',
+    map3Name: 'Заводський район',
+    map3Desc: 'Важкі заводи та склади — стратегічні цілі',
+    mapNum4: 'КАРТА 04',
+    map4Name: 'Узбережжя',
+    map4Desc: 'Прибережні позиції з морською підтримкою та ППО',
     contactTitle: 'Зв\'язок',
     contactGithub: 'GitHub',
     contactChat: 'Чат',
     contactEmail: 'Email',
-    footer: '© 2026 WarHear Protection · Усі права захищені'
+    footer: '© 2026 ERCOMADE AIRO WAR · Усі права захищені'
+  },
+
+  ru: {
+    title: 'ERCOMADE AIRO WAR',
+    tagline: '2D Война · Дроны · Ракеты',
+    badgeEngine: 'Godot Engine 4.7.2',
+    badgeStatus: 'В разработке',
+    aboutTitle: 'Об игре',
+    aboutText: 'ERCOMADE AIRO WAR — это 2D-игра о войне между Украиной и Россией, с дронами и ракетами. Создана на Godot Engine 4.7.2. В игре есть множество юнитов — TU-95MS, X-101, реактивный дрон GEREN-2, Искандер-М, МиГ-31К, Фламинго, HIMARS и ПВО — а также несколько режимов игры и четыре разные карты с заводами.',
+    infoTitle: 'Информация',
+    infoDevLabel: 'Разработчик',
+    infoEngineLabel: 'Движок',
+    infoGenreLabel: 'Жанр',
+    infoGenreValue: '2D Война / Стратегия',
+    infoThemeLabel: 'Тема',
+    infoThemeValue: 'Конфликт Украина · Россия',
+    infoStatusLabel: 'Статус',
+    infoStatusValue: 'В разработке',
+    infoLangLabel: 'Языки',
+    unitsTitle: 'Юниты',
+    unitTypeBomber: 'Стратегический бомбардировщик',
+    unitDescTu95: 'Тяжёлый бомбардировщик с крылатыми ракетами',
+    unitTypeCruise: 'Крылатая ракета',
+    unitDescX101: 'Крылатая ракета большой дальности воздушного базирования',
+    unitTypeJetDrone: 'Реактивный дрон',
+    unitDescGeren: 'Ударный дрон с реактивным двигателем',
+    unitTypeBallistic: 'Баллистическая ракета',
+    unitDescIskander: 'Баллистический ракетный комплекс малой дальности',
+    unitTypeCarrier: 'Носитель ракет',
+    unitDescMig: 'Самолёт-носитель ракет «Кинжал»',
+    unitTypeUkrMissile: 'Украинская ракета',
+    unitDescFlamingo: 'Украинское дальнобойное ударное оружие',
+    unitTypeMLRS: 'РСЗО',
+    unitDescHimars: 'Реактивная система залпового огня',
+    unitTypeAirDef: 'ПВО',
+    unitDescPvo: 'Система противовоздушной обороны',
+    modesTitle: 'Режимы игры',
+    modeSandboxName: 'Песочница',
+    modeSandboxDesc: 'Свободный режим — экспериментируйте со всеми юнитами и картами без ограничений',
+    modeUkraineName: 'Режим Украины',
+    modeUkraineDesc: 'Играйте за украинские силы — защищайте, контратакуйте и наносите ответные удары',
+    modeLaunchName: 'Режим запуска',
+    modeLaunchDesc: 'Режим пуска «Бандероль» — координируйте ракетные и дроновые удары',
+    modeCustomName: 'Свой режим',
+    modeCustomDesc: 'Создайте свой сценарий с выбранными юнитами и целями',
+    mapsTitle: 'Карты',
+    mapNum1: 'КАРТА 01',
+    map1Name: 'Промышленная зона',
+    map1Desc: 'Заводы и промышленные объекты — плотный городской бой',
+    mapNum2: 'КАРТА 02',
+    map2Name: 'Открытые поля',
+    map2Desc: 'Широкие открытые пространства — дальнобойные ракетные дуэли',
+    mapNum3: 'КАРТА 03',
+    map3Name: 'Заводской район',
+    map3Desc: 'Тяжёлые заводы и склады — стратегические цели',
+    mapNum4: 'КАРТА 04',
+    map4Name: 'Побережье',
+    map4Desc: 'Прибрежные позиции с морской поддержкой и ПВО',
+    contactTitle: 'Связь',
+    contactGithub: 'GitHub',
+    contactChat: 'Чат',
+    contactEmail: 'Email',
+    footer: '© 2026 ERCOMADE AIRO WAR · Все права защищены'
   }
 };
 
-let currentLang = 'ru';
+let currentLang = 'en';
 
 function applyLang(lang) {
   currentLang = lang;
@@ -501,7 +680,7 @@ document.querySelectorAll('.lang-switch button').forEach(btn => {
   btn.addEventListener('click', () => applyLang(btn.dataset.lang));
 });
 
-applyLang('ru');
+applyLang('en');
 </script>
 
 </body>
